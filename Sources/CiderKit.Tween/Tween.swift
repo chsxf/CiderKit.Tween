@@ -36,7 +36,7 @@ public struct Tween<T: Sendable>: Sendable {
 
     /// Progress the tween by a certain amount of time in seconds
     ///
-    /// > Note: You should only call this function if the tween is updated automatically by the ```TweenManager```
+    /// > Note: You should only call this function if the tween is not updated automatically by the ```TweenManager```
     ///
     /// - Parameter additionalElapsedTime: Amount of time in seconds of tween progress
     public func update(additionalElapsedTime: TimeInterval) async {

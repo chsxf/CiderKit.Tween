@@ -16,6 +16,7 @@ public actor TweenManager: GlobalActor {
     public static let shared = TweenManager()
 
     private var runningTweenInstances = [TweenInstance]()
+    private var runningSequences = [Sequence]()
     private var displayLinkProxy: DisplayLinkProxy?
 
     internal var runningTweenInstanceCount: Int { runningTweenInstances.count }
@@ -67,7 +68,24 @@ public actor TweenManager: GlobalActor {
         runningTweenInstances.removeAll { $0 === tweenInstance }
     }
 
-    func updateTweens(additionalElapsedTime: TimeInterval) async {
+    func register(sequence: Sequence) {
+        if !runningSequences.contains(where: { $0 === sequence }) {
+            runningSequences.insert(sequence, at: 0)
+        }
+    }
+    
+    func unregister(sequence: Sequence) {
+        runningSequences.removeAll { $0 === sequence }
+    }
+    
+    func update(additionalElapsedTime: TimeInterval) async {
+        for i in stride(from: runningSequences.count - 1, through: 0, by: -1) {
+            let sequence = runningSequences[i]
+            await sequence.update(additionalElapsedTime: additionalElapsedTime)
+            
+            await Task.yield()
+        }
+        
         for i in stride(from: runningTweenInstances.count - 1, through: 0, by: -1) {
             let tween = runningTweenInstances[i]
             if await tween.isRunning {
@@ -85,7 +103,7 @@ public actor TweenManager: GlobalActor {
 
         Task {
             for await timeInterval in displayLinkProxy.timeIntervals {
-                await updateTweens(additionalElapsedTime: timeInterval)
+                await update(additionalElapsedTime: timeInterval)
             }
         }
     }

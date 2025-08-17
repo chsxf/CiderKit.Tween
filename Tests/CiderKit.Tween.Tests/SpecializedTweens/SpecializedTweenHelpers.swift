@@ -1,8 +1,6 @@
 import Testing
 @testable import CiderKit_Tween
 
-let tweenTaskDelay: UInt64 = 1_000_000
-
 func genericUpdateTask<T: Sendable & Equatable>(tween: Tween<T>, expectedValues: [T]) -> Task<T, Never> {
     Task {
         var currentIndex = 0

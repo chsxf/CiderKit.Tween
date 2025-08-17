@@ -5,7 +5,7 @@ internal actor TweenInstance {
     private typealias UpdateFunction = (TimeInterval) async -> Void
 
     private let tweenData: any Tweenable
-    private let manualUpdate: Bool
+    internal let manualUpdate: Bool
 
     internal let duration: TimeInterval
     internal private(set) var elapsedTime: TimeInterval = 0
@@ -20,8 +20,8 @@ internal actor TweenInstance {
     private var startHasBeenNotified = false
     private var updateFunction: UpdateFunction!
 
-    private var loopCount: UInt { Self.computeLoopCount(loopingType: loopingType) }
-    private var isLooping: Bool { Self.computeIsLooping(loopCount: loopCount) }
+    internal var loopCount: UInt { Self.computeLoopCount(loopingType: loopingType) }
+    internal var isLooping: Bool { Self.computeIsLooping(loopCount: loopCount) }
     private var isLastLoop: Bool {
         let loopCount = loopCount
         return loopCount > 1 && currentLoopNumber == loopCount
@@ -77,7 +77,7 @@ internal actor TweenInstance {
     }
 
     internal func update(additionalElapsedTime: TimeInterval) async {
-        guard !isComplete && additionalElapsedTime > 0 else {
+        guard isRunning && !isComplete && additionalElapsedTime > 0 else {
             return
         }
 

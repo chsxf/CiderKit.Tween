@@ -27,13 +27,13 @@ struct TweenManagerTests {
         _ = await Float.tween(from: 0, to: 1, duration: 20)
         _ = await Float.tween(from: 0, to: 1, duration: 30)
 
-        await TweenManager.shared.updateTweens(additionalElapsedTime: 10)
+        await TweenManager.shared.update(additionalElapsedTime: 10)
         #expect(await TweenManager.shared.runningTweenInstanceCount == 2)
 
-        await TweenManager.shared.updateTweens(additionalElapsedTime: 10)
+        await TweenManager.shared.update(additionalElapsedTime: 10)
         #expect(await TweenManager.shared.runningTweenInstanceCount == 1)
 
-        await TweenManager.shared.updateTweens(additionalElapsedTime: 10)
+        await TweenManager.shared.update(additionalElapsedTime: 10)
         #expect(await TweenManager.shared.runningTweenInstanceCount == 0)
     }
 
