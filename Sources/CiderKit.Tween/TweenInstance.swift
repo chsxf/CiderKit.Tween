@@ -174,7 +174,11 @@ internal actor TweenInstance {
         isRunning = false
 
         if complete {
-            let easedValue = easing.easingFunction()(1)
+            var completeEasedValue: Float = 1
+            if case let .pingPong(loopCount) = loopingType, loopCount > 1, loopCount % 2 == 0 {
+                completeEasedValue = 0
+            }
+            let easedValue = easing.easingFunction()(completeEasedValue)
             tweenData.apply(easedValue: easedValue)
         }
         tweenData.finish(complete: complete)
