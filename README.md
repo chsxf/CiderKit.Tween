@@ -28,11 +28,11 @@ The supported types are:
 ## Planned Features and Improvements
 
 - [ ] [`SpriteKit`](https://developer.apple.com/documentation/spritekit) specialized tweens
-- [ ] Sequences
 - [ ] Bridge to [`SKAction`](https://developer.apple.com/documentation/spritekit/skaction)
 - [ ] watchOS Support
 - [X] String specialized tweens (between two strings, with scrambled text, etc.)
 - [X] Loops
+- [X] Sequences
 
 # Getting Started
 
