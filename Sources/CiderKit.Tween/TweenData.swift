@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents data and transformation method for a ```Tween```
-public struct TweenData<T: Sendable> {
+public struct TweenData<T: Sendable>: Sendable {
 
     /// Function that describes the interpolation method
     ///
@@ -14,8 +14,15 @@ public struct TweenData<T: Sendable> {
     ///     - easedValue: Value that has been transformed by an ```EasingFunction``` and that indicates the amount of interpolation that needs to be done
     public typealias InterpolatorFunction = @Sendable (_ from: T, _ to: T, _ easedValue: Float) -> T
 
+    public typealias DeferredValueAccessor = @Sendable () async -> T
+    
     /// Start value
-    public let from: T
+    public var from: T {
+        get async {
+            await deferredFrom()
+        }
+    }
+    internal let deferredFrom: DeferredValueAccessor
     /// End value
     public let to: T
     internal let interpolator: InterpolatorFunction
@@ -45,7 +52,11 @@ public struct TweenData<T: Sendable> {
     ///     - to: End value
     ///     - interpolator: Function that will compute the interpolation
     public init(from: T, to: T, interpolator: @escaping InterpolatorFunction) {
-        self.from = from
+        self.init(deferredFrom: { from }, to: to, interpolator: interpolator)
+    }
+    
+    public init(deferredFrom: @escaping DeferredValueAccessor, to: T, interpolator: @escaping InterpolatorFunction) {
+        self.deferredFrom = deferredFrom
         self.to = to
         self.interpolator = interpolator
 
@@ -60,7 +71,7 @@ public struct TweenData<T: Sendable> {
         onStartContinuation.finish()
     }
 
-    internal func apply(easedValue: Float) {
+    internal func apply(from: T, easedValue: Float) {
         let current = interpolator(from, to, easedValue)
         onUpdateContinuation.yield(current)
     }
@@ -80,5 +91,3 @@ public struct TweenData<T: Sendable> {
     }
 
 }
-
-extension TweenData: Tweenable { }

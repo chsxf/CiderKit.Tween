@@ -15,7 +15,7 @@ public actor TweenManager: GlobalActor {
     /// Accessor to the shared instance of the global actor
     public static let shared = TweenManager()
 
-    private var runningTweenInstances = [TweenInstance]()
+    private var runningTweenInstances = [any TweenInstance]()
     private var runningSequences = [Sequence]()
     private var displayLinkProxy: DisplayLinkProxy?
 
@@ -58,13 +58,13 @@ public actor TweenManager: GlobalActor {
         #endif
     }
 
-    func register(tweenInstance: TweenInstance) {
+    func register(tweenInstance: any TweenInstance) {
         if !runningTweenInstances.contains(where: { $0 === tweenInstance }) {
             runningTweenInstances.insert(tweenInstance, at: 0)
         }
     }
 
-    func unregister(tweenInstance: TweenInstance) {
+    func unregister(tweenInstance: any TweenInstance) {
         runningTweenInstances.removeAll { $0 === tweenInstance }
     }
 
@@ -87,9 +87,9 @@ public actor TweenManager: GlobalActor {
         }
         
         for i in stride(from: runningTweenInstances.count - 1, through: 0, by: -1) {
-            let tween = runningTweenInstances[i]
-            if await tween.isRunning {
-                await tween.update(additionalElapsedTime: additionalElapsedTime)
+            let tweenInstance = runningTweenInstances[i]
+            if await tweenInstance.isRunning {
+                await tweenInstance.update(additionalElapsedTime: additionalElapsedTime)
             }
 
             await Task.yield()

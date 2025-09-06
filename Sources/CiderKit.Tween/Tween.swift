@@ -6,7 +6,7 @@ import Foundation
 @dynamicMemberLookup
 public struct Tween<T: Sendable>: Sendable {
 
-    internal let instance: TweenInstance
+    internal let instance: TweenInstanceActor<T>
     internal let data: TweenData<T>
 
     /// Indicates if the tween is running or not. The ```isComplete``` is `true`, this is always `false`
@@ -26,7 +26,7 @@ public struct Tween<T: Sendable>: Sendable {
     ///     - loopingType: Defines how the tween loops. Defaults to `.none`
     public init(data: TweenData<T>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async {
         self.data = data
-        instance = await TweenInstance(tweenData: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        instance = await TweenInstanceActor(tweenData: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
     }
 
     /// Dymamic accessor for members of ```TweenData```.

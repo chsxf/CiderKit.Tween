@@ -1,10 +1,10 @@
 import Foundation
 
-internal struct SequenceEntry {
+internal struct SequenceEntry: Sendable {
     
     let startAt: TimeInterval
     let sequence: Sequence?
-    let tweenInstance: TweenInstance?
+    let tweenInstance: (any TweenInstance)?
     let duration: TimeInterval
     var elapsedTime: TimeInterval {
         get async {
@@ -25,12 +25,12 @@ internal struct SequenceEntry {
         duration = await sequence.totalDuration
     }
     
-    init(startAt: TimeInterval, tweenInstance: TweenInstance) async {
+    init(startAt: TimeInterval, tweenInstance: any TweenInstance) async {
         self.startAt = startAt
         sequence = nil
         self.tweenInstance = tweenInstance
         let loopCount = await tweenInstance.loopCount
-        duration = loopCount == 0 ? 0 : tweenInstance.duration * Double(loopCount)
+        duration = loopCount == 0 ? 0 : await tweenInstance.duration * Double(loopCount)
     }
     
     func update(additionalElapsedTime: TimeInterval) async {

@@ -80,5 +80,54 @@ public extension String {
         let tweenData = TweenData(from: from, to: to, interpolator: interpolator)
         return await Tween(data: tweenData, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
     }
+    
+    /// Create a tween between two `String` values, with the starting value being obtained when the tween actually starts
+    ///
+    /// Characters from the end value are revealed progressively and the tween progresses.
+    ///
+    /// Produced values are created differently if the starting value has a greater length than the end value, whose overall length will
+    /// progressively decrease to reach the length of the end value.
+    ///
+    /// Produced values can on demand also contain scrambled characters. In this case, the length of the generated values is the same
+    /// as the current generated value or the end value, whichever is larger.
+    ///
+    /// > Tip: The following example will produce: `a`, `ab`, and `abc`
+    /// >
+    /// > ```swift
+    /// > String.tween(from: "", to: "abc", duration: someDuration)
+    /// > ```
+    ///
+    /// > Tip: The following example will produce: `abc`, `ab`, and `a`
+    /// >
+    /// > ```swift
+    /// > String.tween(from: "abc", to: "", duration: someDuration)
+    /// > ```
+    ///
+    /// > Tip: The following example will produce: `a##`, `ab#`, and `abc`. (`#` stands for any of the default scramble characters)
+    /// >
+    /// > ```swift
+    /// > String.tween(from: "", to: "abc", duration: someDuration, scramble: true)
+    /// > ```
+    ///
+    /// > Tip: The following example will produce: `a----`, `ab--`, and `abc`
+    /// >
+    /// > ```swift
+    /// > String.tween(from: "     ", to: "abc", duration: someDuration, scramble: true, scrambleCharacters: "-")
+    /// > ```
+    ///
+    /// - Parameters:
+    ///     - deferredFrom: Deferred starting value accessor
+    ///     - to: Ending value
+    ///     - duration: Duration in seconds of the tween
+    ///     - scramble: If set, unrevealed characters will be replaced by random characters
+    ///     - scrambleCharacters: Pool of characters to use as scramble replacement. If `nil`, a pool containing lower-case and upper-case letters, and digits is used
+    ///     - easing: ```Easing``` type to apply
+    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
+    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
+    static func tween(deferredFrom: @escaping TweenData<String>.DeferredValueAccessor, to: String, duration: TimeInterval, scramble: Bool = false, scrambleCharacters: String? = nil, easing: Easing = Easing.linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<String> {
+        let interpolator = parametrizedStringTweenInterpolator(scrambled: scramble, scrambleCharacters: scrambleCharacters)
+        let tweenData = TweenData(deferredFrom: deferredFrom, to: to, interpolator: interpolator)
+        return await Tween(data: tweenData, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+    }
 
 }
