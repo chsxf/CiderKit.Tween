@@ -18,7 +18,7 @@ struct CGSizeTweenTests {
 
     @Test("CGSize Tween Test", .tags(.specializedTweenTest))
     func tweenTest() async throws {
-        let tween = await CGSize.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true)
+        let tween = await CGSize.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 

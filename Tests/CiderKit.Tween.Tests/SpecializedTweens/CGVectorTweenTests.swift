@@ -2,23 +2,23 @@ import Testing
 import Foundation
 @testable import CiderKit_Tween
 
-struct CGPointTweenTests {
+struct CGVectorTweenTests {
 
-    private static let from: CGPoint = CGPoint(x: 0, y: 100)
-    private static let to: CGPoint = CGPoint(x: 50, y: 10)
+    private static let from: CGVector = CGVector(dx: 0, dy: 100)
+    private static let to: CGVector = CGVector(dx: 50, dy: 10)
     private static let duration: TimeInterval = 5
     private static let timeIncrement: TimeInterval = 1
     private static let expectedValues = [
-        CGPoint(x: 10.000000149011612, y: 81.9999997317791),
-        CGPoint(x: 20.000000298023224, y: 63.9999994635582),
-        CGPoint(x: 30.000001192092896, y: 45.99999785423279),
-        CGPoint(x: 40.00000059604645, y: 27.999998927116394),
+        CGVector(dx: 10.000000149011612, dy: 81.9999997317791),
+        CGVector(dx: 20.000000298023224, dy: 63.9999994635582),
+        CGVector(dx: 30.000001192092896, dy: 45.99999785423279),
+        CGVector(dx: 40.00000059604645, dy: 27.999998927116394),
         Self.to
     ]
 
-    @Test("CGPoint Tween Test", .tags(.specializedTweenTest))
+    @Test("CGVector Tween Test", .tags(.specializedTweenTest))
     func tweenTest() async throws {
-        let tween = await CGPoint.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await CGVector.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 

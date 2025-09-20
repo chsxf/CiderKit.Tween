@@ -9,7 +9,7 @@ struct StringTweenTests {
         let from = ""
         let to = "A nice text"
 
-        let tween = await String.tween(from: from, to: to, duration: 10, manualUpdate: true)
+        let tween = await String.tween(.fromTo(from, to), duration: 10, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [
             "",
@@ -51,7 +51,7 @@ struct StringTweenTests {
         let from = "A nice text"
         let to = ""
 
-        let tween = await String.tween(from: from, to: to, duration: 10, manualUpdate: true)
+        let tween = await String.tween(.fromTo(from, to), duration: 10, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [
             "A nice tex",
@@ -92,7 +92,7 @@ struct StringTweenTests {
         let from = "The longer text to start from"
         let to = "A nice text"
 
-        let tween = await String.tween(from: from, to: to, duration: 10, manualUpdate: true)
+        let tween = await String.tween(.fromTo(from, to), duration: 10, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [
             "The longer text to start fro",
@@ -133,7 +133,7 @@ struct StringTweenTests {
         let from = ""
         let to = "A nice text"
 
-        let tween = await String.tween(from: from, to: to, duration: 10, scramble: true, scrambleCharacters: "-", manualUpdate: true)
+        let tween = await String.tween(.fromTo(from, to), duration: 10, scramble: true, scrambleCharacters: "-", manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [
             "-----------",
@@ -175,7 +175,7 @@ struct StringTweenTests {
         let from = "-----------------"
         let to = "A nice text"
 
-        let tween = await String.tween(from: from, to: to, duration: 10, scramble: true, scrambleCharacters: "-", manualUpdate: true)
+        let tween = await String.tween(.fromTo(from, to), duration: 10, scramble: true, scrambleCharacters: "-", manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [
             "----------------",

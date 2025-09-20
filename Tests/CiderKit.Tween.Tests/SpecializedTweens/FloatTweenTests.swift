@@ -18,7 +18,7 @@ struct FloatTweenTests {
 
     @Test("Float Tween Test", .tags(.specializedTweenTest))
     func tweenTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 
@@ -45,7 +45,7 @@ struct FloatTweenTests {
 
     @Test("SIMD2<Float> Tween Test", .tags(.specializedTweenTest))
     func simd2tweenTest() async throws {
-        let tween = await SIMD2<Float>.tween(from: Self.simd2From, to: Self.simd2To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD2<Float>.tween(.fromTo(Self.simd2From, Self.simd2To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd2ExpectedValues)
 
@@ -72,7 +72,7 @@ struct FloatTweenTests {
 
     @Test("SIMD3<Float> Tween Test", .tags(.specializedTweenTest))
     func simd3tweenTest() async throws {
-        let tween = await SIMD3<Float>.tween(from: Self.simd3From, to: Self.simd3To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD3<Float>.tween(.fromTo(Self.simd3From, Self.simd3To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd3ExpectedValues)
 
@@ -93,7 +93,7 @@ struct FloatTweenTests {
 
     @Test("SIMD4<Float> Tween Test", .tags(.specializedTweenTest))
     func simd4tweenTest() async throws {
-        let tween = await SIMD4<Float>.tween(from: Self.simd4From, to: Self.simd4To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD4<Float>.tween(.fromTo(Self.simd4From, Self.simd4To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd4ExpectedValues)
 
@@ -114,7 +114,7 @@ struct FloatTweenTests {
 
     @Test("SIMD8<Float> Tween Test", .tags(.specializedTweenTest))
     func simd8tweenTest() async throws {
-        let tween = await SIMD8<Float>.tween(from: Self.simd8From, to: Self.simd8To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD8<Float>.tween(.fromTo(Self.simd8From, Self.simd8To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd8ExpectedValues)
 
@@ -135,7 +135,7 @@ struct FloatTweenTests {
 
     @Test("SIMD16<Float> Tween Test", .tags(.specializedTweenTest))
     func simd16tweenTest() async throws {
-        let tween = await SIMD16<Float>.tween(from: Self.simd16From, to: Self.simd16To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD16<Float>.tween(.fromTo(Self.simd16From, Self.simd16To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd16ExpectedValues)
 
@@ -156,7 +156,7 @@ struct FloatTweenTests {
 
     @Test("SIMD32<Float> Tween Test", .tags(.specializedTweenTest))
     func simd32tweenTest() async throws {
-        let tween = await SIMD32<Float>.tween(from: Self.simd32From, to: Self.simd32To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD32<Float>.tween(.fromTo(Self.simd32From, Self.simd32To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd32ExpectedValues)
 
@@ -177,7 +177,7 @@ struct FloatTweenTests {
 
     @Test("SIMD64<Float> Tween Test", .tags(.specializedTweenTest))
     func simd64tweenTest() async throws {
-        let tween = await SIMD64<Float>.tween(from: Self.simd64From, to: Self.simd64To, duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD64<Float>.tween(.fromTo(Self.simd64From, Self.simd64To), duration: Self.duration, manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd64ExpectedValues)
 
@@ -197,7 +197,7 @@ struct FloatTweenTests {
     }
 
     @Test func customEasingTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, easing: .custom(Self.inverseLinear(_:)), manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, easing: .custom(Self.inverseLinear(_:)), manualUpdate: true)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: [ 80, 60.000004, 39.999996, 19.999998, Self.from ])
 

@@ -12,19 +12,24 @@ public struct TweenData<T: Sendable>: Sendable {
     ///     - from: Start value of the tween
     ///     - to: End value of the tween
     ///     - easedValue: Value that has been transformed by an ```EasingFunction``` and that indicates the amount of interpolation that needs to be done
+    /// - Returns: The interpolated tweened value
     public typealias InterpolatorFunction = @Sendable (_ from: T, _ to: T, _ easedValue: Float) -> T
 
+    /// Function that recovers a start value at a later time
+    /// - Returns: The start value to use when the tween starts
     public typealias DeferredValueAccessor = @Sendable () async -> T
     
-    /// Start value
-    public var from: T {
-        get async {
-            await deferredFrom()
-        }
+    /// Function that computes the end value relatively from the start value
+    /// - Parameters:
+    ///     - from: Start value of the tween
+    /// - Returns: The end value for the tween
+    public typealias RelativeValueAccessor = @Sendable (_ from: T) -> T
+    
+    internal var from: T {
+        get async { await deferredFrom() }
     }
     internal let deferredFrom: DeferredValueAccessor
-    /// End value
-    public let to: T
+    internal let to: RelativeValueAccessor
     internal let interpolator: InterpolatorFunction
 
     private let onStartContinuation: AsyncStream<Void>.Continuation
@@ -55,7 +60,23 @@ public struct TweenData<T: Sendable>: Sendable {
         self.init(deferredFrom: { from }, to: to, interpolator: interpolator)
     }
     
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - deferredFrom: Function called when the tween actually starts to recover the start value
+    ///     - to: End value
+    ///     - interpolator: Function that will compute the interpolation
     public init(deferredFrom: @escaping DeferredValueAccessor, to: T, interpolator: @escaping InterpolatorFunction) {
+        self.init(deferredFrom: deferredFrom, to: { _ in to }, interpolator: interpolator)
+    }
+    
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - deferredFrom: Function called when the tween actually starts to recover the start value
+    ///     - to: Function that computes the end value based on the start value
+    ///     - interpolator: Function that will compute the interpolation
+    public init(deferredFrom: @escaping DeferredValueAccessor, to: @escaping RelativeValueAccessor, interpolator: @escaping InterpolatorFunction) {
         self.deferredFrom = deferredFrom
         self.to = to
         self.interpolator = interpolator
@@ -72,7 +93,7 @@ public struct TweenData<T: Sendable>: Sendable {
     }
 
     internal func apply(from: T, easedValue: Float) {
-        let current = interpolator(from, to, easedValue)
+        let current = interpolator(from, to(from), easedValue)
         onUpdateContinuation.yield(current)
     }
 

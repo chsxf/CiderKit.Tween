@@ -12,7 +12,7 @@ struct TweenTests {
     private static let updateLoops: Int = 5
 
     @Test func eventTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let startTask = Task {
             var startRegistered = false
@@ -55,7 +55,7 @@ struct TweenTests {
     }
 
     @Test func stopAndCompleteTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let completionTask = Task {
             var completionRegistered = false
@@ -75,7 +75,7 @@ struct TweenTests {
     }
 
     @Test func stopAndDontCompleteTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let completionTask = Task {
             var completionRegistered = false
@@ -95,7 +95,7 @@ struct TweenTests {
     }
 
     @Test func linearLoopTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true, loopingType: .normal(loopCount: 3))
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true, loopingType: .normal(loopCount: 3))
 
         let completionTask = Task {
             var completionRegistered = false
@@ -132,7 +132,7 @@ struct TweenTests {
     }
 
     @Test func pingPongLoopTest() async throws {
-        let tween = await Float.tween(from: Self.from, to: Self.to, duration: Self.duration, manualUpdate: true, loopingType: .pingPong(loopCount: 4))
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true, loopingType: .pingPong(loopCount: 4))
 
         let completionTask = Task {
             var completionRegistered = false
