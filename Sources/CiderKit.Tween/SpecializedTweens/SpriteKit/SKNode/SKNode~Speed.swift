@@ -2,7 +2,7 @@ import SpriteKit
 
 public extension SKNode {
     
-    /// Changes the `speed` of a `SKNode` instance
+    /// Tweens the `speed` of a `SKNode` instance
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
