@@ -16,8 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Tween start and end values are now describe through 'travel' enumerations to allow for simple code and greater flexibility
-- Start values can now be defined in a deferred way, allowing for tweens to be created in advance independently from the values they are supposed to work with
+- Tween start and end values are now described through 'travel' enumerations to allow for simple code and greater flexibility
+- Start values can now be defined in a deferred way, allowing for tweens to be created in advance, independently from the values they are supposed to work with
 - End values can now be defined relatively from the start value 
 
 ## [0.3.0] - 2025-08-27
