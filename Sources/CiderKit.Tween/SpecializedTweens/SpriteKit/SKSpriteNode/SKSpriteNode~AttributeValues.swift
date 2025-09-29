@@ -5,7 +5,7 @@ public extension SKSpriteNode {
     /// Tweens the `Float` value of an attribute of a `SKSpriteNode` instance
     ///
     /// - Parameters:
-    ///     - named: Name of the attribute
+    ///     - key: Name of the attribute
     ///     - travel: Description of the starting and ending values for the tween
     ///     - duration: Duration in seconds of the tween
     ///     - easing: ```Easing``` type to apply
@@ -31,7 +31,7 @@ public extension SKSpriteNode {
     /// Tweens the `vector_float2` value of an attribute of a `SKSpriteNode` instance
     ///
     /// - Parameters:
-    ///     - named: Name of the attribute
+    ///     - key: Name of the attribute
     ///     - travel: Description of the starting and ending values for the tween
     ///     - duration: Duration in seconds of the tween
     ///     - easing: ```Easing``` type to apply
@@ -57,7 +57,7 @@ public extension SKSpriteNode {
     /// Tweens the `vector_float3` value of an attribute of a `SKSpriteNode` instance
     ///
     /// - Parameters:
-    ///     - named: Name of the attribute
+    ///     - key: Name of the attribute
     ///     - travel: Description of the starting and ending values for the tween
     ///     - duration: Duration in seconds of the tween
     ///     - easing: ```Easing``` type to apply
@@ -83,7 +83,7 @@ public extension SKSpriteNode {
     /// Tweens the `vector_float4` value of an attribute of a `SKSpriteNode` instance
     ///
     /// - Parameters:
-    ///     - named: Name of the attribute
+    ///     - key: Name of the attribute
     ///     - travel: Description of the starting and ending values for the tween
     ///     - duration: Duration in seconds of the tween
     ///     - easing: ```Easing``` type to apply
