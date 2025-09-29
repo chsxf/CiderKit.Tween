@@ -15,19 +15,23 @@ This package provides tweens to animate values of various types with linear or n
 
 The supported types are:
 
-- `Int` (+ `SIMD2` to `SIMD64` variants)
-- `UInt` (+ `SIMD2` to `SIMD64` variants)
-- `Float` (+ `SIMD2` to `SIMD64` variants)
-- `Double` (+ `SIMD2` to `SIMD64` variants)
-- `CGFloat` 
-- `CGPoint`
-- `CGRect`
-- `CGSize`
-- `String` (with optional scrambled text)
+- Built-in Swift Types
+    - `Int` (+ `SIMD2` to `SIMD64` variants)
+    - `UInt` (+ `SIMD2` to `SIMD64` variants)
+    - `Float` (+ `SIMD2` to `SIMD64` variants)
+    - `Double` (+ `SIMD2` to `SIMD64` variants)
+    - `String` (with optional scrambled text)
+- Core Graphics Types
+    - `CGColor`
+    - `CGFloat` 
+    - `CGPoint`
+    - `CGRect`
+    - `CGSize`
+    - `CGVector`
 
 ## Planned Features and Improvements
 
-- [ ] [`SpriteKit`](https://developer.apple.com/documentation/spritekit) specialized tweens
+- [ ] [`SpriteKit`](https://developer.apple.com/documentation/spritekit) specialized tweens _(in progress)_
 - [ ] Bridge to [`SKAction`](https://developer.apple.com/documentation/spritekit/skaction)
 - [ ] watchOS Support
 - [X] String specialized tweens (between two strings, with scrambled text, etc.)
@@ -65,7 +69,7 @@ To install it, simply add the dependency to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chsxf/CiderTween.Kit.git", from: "0.1.0"),
+    .package(url: "https://github.com/chsxf/CiderKit.Tween.git", from: "0.4.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: ["CiderKit.Tween"]),
@@ -74,8 +78,8 @@ targets: [
 
 ## As a Project Dependency in Xcode
 
-- In Xcode, select **File > Add Packages...** and enter `https://github.com/chsxf/CiderTween.Kit.git` in the search field (top-right). 
-- Then select **Up to Next Major Version** as the **Dependency Rule** with `0.1.0` in the associated text field.
+- In Xcode, select **File > Add Packages...** and enter `https://github.com/chsxf/CiderKit.Tween.git` in the search field (top-right). 
+- Then select **Up to Next Major Version** as the **Dependency Rule** with `0.4.0` in the associated text field.
 - Then select the project of your choice in the **Add to Project** list.
 - Finally, click the **Add Package** button.
 
