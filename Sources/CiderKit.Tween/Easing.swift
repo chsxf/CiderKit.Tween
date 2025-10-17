@@ -158,7 +158,7 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
     /// > Note: ```description``` will return `"Linear"` for this case.
     case linear
 
-    /// Allow the use of a custom easing function
+    /// Allows the use of a custom easing
     ///
     /// > Warning: This case cannot be encoded and will throw ```EasingError/encodingCustom```
     ///
@@ -167,6 +167,28 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
     ///     - description: Textual description of the applied esaing type
     case custom(_ easingFunction: EasingFunction, _ description: String = "Custom")
 
+    /// Creates an easing compatible with the CSS `steps()` function
+    ///
+    /// See [this page](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/steps) for more information
+    ///
+    /// - Parameters:
+    ///     - stepCount: Number of steps
+    ///     - jumpType: Specifies when the jump between values occurs
+    public static func steps(_ stepCount: UInt, jumpType: StepJumpType) throws -> Easing {
+        return .custom(try EasingFunctions.steps(stepCount, jumpType: jumpType), "steps(\(stepCount), \(jumpType))")
+    }
+    
+    /// Creates an easing compatible with the CSS `cubic-bezier()` function
+    ///
+    /// See [this page](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier) for more information
+    ///
+    /// - Parameters:
+    ///     - c1: First control point
+    ///     - c2: Second control point
+    public static func cubicBezier(c1: CGPoint, c2: CGPoint) -> Easing {
+        return .custom(EasingFunctions.cubicBezier(c1: c1, c2: c2), "cubic-bezier(\(c1.x), \(c1.y), \(c2.x), \(c2.y))")
+    }
+    
     /// Decodes an easing case from its ```description```
     ///
     /// For example, `"In Sine"` will be decoded as ```inSine```
@@ -199,6 +221,7 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
         try singleValueContainer.encode(description)
     }
 
+    /// Textual representation of the easing enumeration
     public var description: String {
         switch self {
             case .inSine: return "In Sine"
@@ -246,6 +269,7 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
         }
     }
 
+    /// Easing function associated with the easing enumeration
     public func easingFunction() -> EasingFunction {
         switch self {
             case .inSine: EasingFunctions.inSine

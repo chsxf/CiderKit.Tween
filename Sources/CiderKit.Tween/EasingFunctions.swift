@@ -315,5 +315,109 @@ internal struct EasingFunctions {
     }
 
     static func linear(_ x: Float) -> Float { x }
+    
+    static func steps(_ stepCount: UInt, jumpType: StepJumpType) throws -> EasingFunction {
+        let minimumAcceptable = jumpType == .jumpNone ? 2 : 1
+        guard stepCount >= minimumAcceptable else {
+            throw EasingError.tooFewSteps
+        }
+        
+        return { x in
+            if x >= 1 {
+                return 1
+            }
+            
+            let interval = jumpType.getEasingInterval(stepCount: stepCount)
+            let stepWidth = 1.0 / Float(stepCount)
+            if x < stepWidth {
+                return interval.0
+            }
+            
+            if stepCount == 1 {
+                return interval.1
+            }
+            
+            let stepHeight = (interval.1 - interval.0) / Float(stepCount - 1)
+            let numberOfSteps = (x / stepWidth).rounded(.towardZero)
+            return interval.0 + stepHeight * numberOfSteps
+        }
+    }
+    
+    // Cubic Bezier implementation taken from the Ladybird browser source code
+    // https://github.com/LadybirdBrowser/ladybird/blob/master/Libraries/LibWeb/CSS/StyleValues/EasingStyleValue.cpp
+    fileprivate typealias CubicBezierCacheData = (x: Float, y: Float, t: Float)
+    
+    fileprivate static func cubicBezierAt(x1: Float, x2: Float, t: Float) -> Float {
+        let oneMinusT = 1.0 - t
+        let oneMinusTSquared = oneMinusT * oneMinusT
+        let tSquared = t * t
+        let tCubed = tSquared * t
+        return 3 * oneMinusTSquared * t * x1 + 3 * oneMinusT * tSquared * x2 + tCubed
+    }
+    
+    fileprivate static func cubicBezierSolve(c1: CGPoint, c2: CGPoint, x: Float) -> CubicBezierCacheData {
+        (
+            cubicBezierAt(x1: Float(c1.x), x2: Float(c2.x), t: x),
+            cubicBezierAt(x1: Float(c1.y), x2: Float(c2.y), t: x),
+            x
+        )
+    }
+
+    fileprivate static func buildCubicBezierCache(c1: CGPoint, c2: CGPoint) -> [CubicBezierCacheData] {
+        var cache = [CubicBezierCacheData]()
+        cache.append((0, 0, 0))
+        let step: Float = 1 / 60
+        var t = step
+        while t < 1 {
+            cache.append(Self.cubicBezierSolve(c1: c1, c2: c2, x: t))
+            t += step
+        }
+        cache.append((1, 1, 1))
+        return cache
+    }
+    
+    static func cubicBezier(c1: CGPoint, c2: CGPoint) -> EasingFunction {
+        let c1Clamped = CGPoint(x: c1.x.clamped(to: 0...1), y: c1.y)
+        let c2Clamped = CGPoint(x: c2.x.clamped(to: 0...1), y: c2.y)
+        
+        let cubicBezierCache = Self.buildCubicBezierCache(c1: c1, c2: c2)
+        
+        return { x in
+            if x < 0 {
+                if c1Clamped.x > 0 {
+                    return Float(c1Clamped.y / (c1Clamped.x * CGFloat(x)))
+                }
+                
+                if c2Clamped.x > 0 {
+                    return Float(c2Clamped.y / (c2Clamped.x * CGFloat(x)))
+                }
+                
+                return 0
+            }
+            
+            if x > 1 {
+                if c2Clamped.x < 1 {
+                    return Float(((1.0 - c2Clamped.y) / ((1.0 - c2Clamped.x) * (Double(x) - 1.0))) + 1.0)
+                }
+                
+                if c1Clamped.x < 1 {
+                    return Float(((1.0 - c1Clamped.y) / ((1.0 - c1Clamped.x) * (Double(x) - 1.0))) + 1.0)
+                }
+                
+                return 1
+            }
+            
+            for i in 1..<cubicBezierCache.count {
+                let cacheEntry = cubicBezierCache[i]
+                if cacheEntry.x > x {
+                    let previousCacheEntry = cubicBezierCache[i - 1]
+                    let factor = (x - previousCacheEntry.x) / (cacheEntry.x - previousCacheEntry.x)
+                    return previousCacheEntry.y + factor * (cacheEntry.y - previousCacheEntry.y)
+                }
+            }
+            
+            return x
+        }
+    }
 
 }
