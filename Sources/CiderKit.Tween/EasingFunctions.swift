@@ -315,5 +315,32 @@ internal struct EasingFunctions {
     }
 
     static func linear(_ x: Float) -> Float { x }
+    
+    static func steps(_ stepCount: UInt, jumpType: StepJumpType) throws -> EasingFunction {
+        let minimumAcceptable = jumpType == .jumpNone ? 2 : 1
+        guard stepCount >= minimumAcceptable else {
+            throw EasingError.tooFewSteps
+        }
+        
+        return { x in
+            if x >= 1 {
+                return 1
+            }
+            
+            let interval = jumpType.getEasingInterval(stepCount: stepCount)
+            let stepWidth = 1.0 / Float(stepCount)
+            if x < stepWidth {
+                return interval.0
+            }
+            
+            if stepCount == 1 {
+                return interval.1
+            }
+            
+            let stepHeight = (interval.1 - interval.0) / Float(stepCount - 1)
+            let numberOfSteps = (x / stepWidth).rounded(.towardZero)
+            return interval.0 + stepHeight * numberOfSteps
+        }
+    }
 
 }
