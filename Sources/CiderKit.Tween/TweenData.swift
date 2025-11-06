@@ -18,13 +18,13 @@ public struct TweenData<T: Sendable>: Sendable {
     /// Function that recovers a start value at a later time
     /// - Returns: The start value to use when the tween starts
     public typealias DeferredValueAccessor = @Sendable () async -> T
-    
+
     /// Function that computes the end value relatively from the start value
     /// - Parameters:
     ///     - from: Start value of the tween
     /// - Returns: The end value for the tween
     public typealias RelativeValueAccessor = @Sendable (_ from: T) -> T
-    
+
     internal var from: T {
         get async { await deferredFrom() }
     }
@@ -59,7 +59,7 @@ public struct TweenData<T: Sendable>: Sendable {
     public init(from: T, to: T, interpolator: @escaping InterpolatorFunction) {
         self.init(deferredFrom: { from }, to: to, interpolator: interpolator)
     }
-    
+
     /// Initializer
     ///
     /// - Parameters:
@@ -69,7 +69,7 @@ public struct TweenData<T: Sendable>: Sendable {
     public init(deferredFrom: @escaping DeferredValueAccessor, to: T, interpolator: @escaping InterpolatorFunction) {
         self.init(deferredFrom: deferredFrom, to: { _ in to }, interpolator: interpolator)
     }
-    
+
     /// Initializer
     ///
     /// - Parameters:

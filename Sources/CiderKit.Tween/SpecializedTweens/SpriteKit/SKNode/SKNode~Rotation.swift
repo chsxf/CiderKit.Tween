@@ -1,7 +1,7 @@
 import SpriteKit
 
 public extension SKNode {
-    
+
     /// Rotates a `SKNode` instance
     ///
     /// - Parameters:
@@ -24,5 +24,5 @@ public extension SKNode {
         }
         return tween
     }
-    
+
 }

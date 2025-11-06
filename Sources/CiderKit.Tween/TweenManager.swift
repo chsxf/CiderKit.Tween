@@ -73,19 +73,19 @@ public actor TweenManager: GlobalActor {
             runningSequences.insert(sequence, at: 0)
         }
     }
-    
+
     func unregister(sequence: Sequence) {
         runningSequences.removeAll { $0 === sequence }
     }
-    
+
     func update(additionalElapsedTime: TimeInterval) async {
         for i in stride(from: runningSequences.count - 1, through: 0, by: -1) {
             let sequence = runningSequences[i]
             await sequence.update(additionalElapsedTime: additionalElapsedTime)
-            
+
             await Task.yield()
         }
-        
+
         for i in stride(from: runningTweenInstances.count - 1, through: 0, by: -1) {
             let tweenInstance = runningTweenInstances[i]
             if await tweenInstance.isRunning {

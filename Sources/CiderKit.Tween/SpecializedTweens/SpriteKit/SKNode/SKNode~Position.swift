@@ -1,7 +1,7 @@
 import SpriteKit
 
 public extension SKNode {
-    
+
     /// Moves a `SKNode` instance
     ///
     /// - Parameters:
@@ -24,7 +24,7 @@ public extension SKNode {
         }
         return tween
     }
-    
+
     /// Moves a `SKNode` instance on the X axis only
     ///
     /// - Parameters:
@@ -51,7 +51,7 @@ public extension SKNode {
         }
         return tween
     }
-    
+
     /// Moves a `SKNode` instance on the Y axis only
     ///
     /// - Parameters:
@@ -64,7 +64,7 @@ public extension SKNode {
     func moveY(_ travel: TweenSimpleTravel<CGFloat>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none, setupUpdate: Bool = true) async -> Tween<CGFloat> {
         let detailedTravel = travel.toDetailedTravel(deferredFrom: { await MainActor.run { self.position.y } },
                                                     relativeAccessorFactory: { by in { from in from + by } })
-        
+
         let tween = await CGFloat.tween(detailedTravel, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
         if setupUpdate {
             Task {
@@ -79,7 +79,7 @@ public extension SKNode {
         }
         return tween
     }
-    
+
     /// Moves a `SKNode` instance on the Z axis only
     ///
     /// - Parameters:
@@ -92,7 +92,7 @@ public extension SKNode {
     func moveZ(_ travel: TweenSimpleTravel<CGFloat>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none, setupUpdate: Bool = true) async -> Tween<CGFloat> {
         let detailedTravel = travel.toDetailedTravel(deferredFrom: { await MainActor.run { self.zPosition } },
                                                     relativeAccessorFactory: { by in { from in from + by } })
-        
+
         let tween = await CGFloat.tween(detailedTravel, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
         if setupUpdate {
             Task {
@@ -103,5 +103,5 @@ public extension SKNode {
         }
         return tween
     }
-    
+
 }

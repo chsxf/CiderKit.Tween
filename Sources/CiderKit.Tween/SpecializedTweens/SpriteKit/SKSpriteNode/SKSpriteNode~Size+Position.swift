@@ -1,7 +1,7 @@
 import SpriteKit
 
 public extension SKSpriteNode {
-    
+
     /// Tweens the `size` of a `SKSpriteNode` instance
     ///
     /// - Parameters:
@@ -11,7 +11,8 @@ public extension SKSpriteNode {
     ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
     ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
     ///     - setupUpdate: If set, the tween updated the position of the `SKNode` instance automatically
-    func tweenSize(_ travel: TweenSimpleTravel<CGSize>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none, setupUpdate: Bool = true) async -> Tween<CGSize> {
+    func tweenSize(_ travel: TweenSimpleTravel<CGSize>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none,
+                   setupUpdate: Bool = true) async -> Tween<CGSize> {
         let detailedTravel = travel.toDetailedTravel(
             deferredFrom: { await MainActor.run { self.size } },
             relativeAccessorFactory: { by in { from in CGSize(width: from.width + by.width, height: from.height + by.height) }}
@@ -26,7 +27,7 @@ public extension SKSpriteNode {
         }
         return tween
     }
-    
+
     /// Tweens the `anchorPoint` of a `SKSpriteNode` instance
     ///
     /// - Parameters:
@@ -36,7 +37,8 @@ public extension SKSpriteNode {
     ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
     ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
     ///     - setupUpdate: If set, the tween updated the position of the `SKNode` instance automatically
-    func tweenAnchorPoint(_ travel: TweenSimpleTravel<CGPoint>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none, setupUpdate: Bool = true) async -> Tween<CGPoint> {
+    func tweenAnchorPoint(_ travel: TweenSimpleTravel<CGPoint>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none,
+                          setupUpdate: Bool = true) async -> Tween<CGPoint> {
         let detailedTravel = travel.toDetailedTravel(
             deferredFrom: { await MainActor.run { self.anchorPoint } },
             relativeAccessorFactory: { by in { from in CGPoint(x: from.x + by.x, y: from.y + by.y) }}
@@ -51,5 +53,5 @@ public extension SKSpriteNode {
         }
         return tween
     }
-    
+
 }

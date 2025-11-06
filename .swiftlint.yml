@@ -1,5 +1,6 @@
 disabled_rules:
   - statement_position
+  - large_tuple
 
 line_length: 220
 

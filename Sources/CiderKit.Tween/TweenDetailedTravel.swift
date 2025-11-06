@@ -29,13 +29,13 @@ public enum TweenDetailedTravel<T: Sendable>: Sendable {
         switch self {
             case let .fromTo(from, to):
                 return TweenData(from: from, to: to, interpolator: interpolator)
-                
+
             case let .to(to, deferredFrom):
                 return TweenData(deferredFrom: deferredFrom, to: to, interpolator: interpolator)
-                
+
             case let .by(by, deferredFrom, relativeAccessorFactory):
                 return TweenData(deferredFrom: deferredFrom, to: relativeAccessorFactory(by), interpolator: interpolator)
         }
     }
-    
+
 }

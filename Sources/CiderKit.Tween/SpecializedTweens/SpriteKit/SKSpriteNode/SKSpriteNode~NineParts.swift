@@ -1,7 +1,7 @@
 import SpriteKit
 
 public extension SKSpriteNode {
-    
+
     /// Tweens the `centerRect` of a `SKSpriteNode` instance
     ///
     /// - Parameters:
@@ -11,7 +11,8 @@ public extension SKSpriteNode {
     ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
     ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
     ///     - setupUpdate: If set, the tween updated the position of the `SKNode` instance automatically
-    func tweenCenterRect(_ travel: TweenSimpleTravel<CGRect>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none, setupUpdate: Bool = true) async -> Tween<CGRect> {
+    func tweenCenterRect(_ travel: TweenSimpleTravel<CGRect>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none,
+                         setupUpdate: Bool = true) async -> Tween<CGRect> {
         let detailedTravel = travel.toDetailedTravel(
             deferredFrom: { await MainActor.run { self.centerRect } },
             relativeAccessorFactory: { by in { from in CGRect(x: from.minX + by.minX, y: from.minY + by.minY, width: from.width + by.width, height: from.height + by.height) }}
@@ -26,5 +27,5 @@ public extension SKSpriteNode {
         }
         return tween
     }
-    
+
 }

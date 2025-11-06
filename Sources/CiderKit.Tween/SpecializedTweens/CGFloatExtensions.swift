@@ -19,16 +19,16 @@ public extension CGFloat {
         let data = travel.toTweenData(interpolator: cgfloatTweenInterpolator(from:to:easedValue:))
         return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
     }
-    
+
     internal func clamped(to: ClosedRange<CGFloat>) -> CGFloat {
         if self < to.lowerBound {
             return to.lowerBound
         }
-        
+
         if self > to.upperBound {
             return to.upperBound
         }
-        
+
         return self
     }
 

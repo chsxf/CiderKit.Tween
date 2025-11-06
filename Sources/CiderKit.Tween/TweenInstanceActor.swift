@@ -40,7 +40,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
     internal init(tweenData: TweenData<T>, duration: TimeInterval, easing: Easing, manualUpdate: Bool, loopingType: LoopingType) async {
         // If deferred, startValue can be wrong but we need to get an actual value if the tween is stopped before being started
         self.startValue = await tweenData.from
-        
+
         self.tweenData = tweenData
         self.manualUpdate = manualUpdate
 
@@ -87,7 +87,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
 
         if elapsedTime == 0 && !startHasBeenNotified {
             startValue = await tweenData.deferredFrom()
-            
+
             tweenData.notifyStart()
             startHasBeenNotified = true
         }

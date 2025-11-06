@@ -14,19 +14,19 @@ internal func relativeSKColorAccessorFactory(_ by: SKColor) -> TweenData<SKColor
     return { from in
         let fromCGColor = from.cgColor
         let byCGColor = by.cgColor
-        
+
         let fromColorSpace = fromCGColor.colorSpace!
         let byColorSpace = byCGColor.colorSpace!
-        
+
         let byConverted = fromColorSpace != byColorSpace ? byCGColor.converted(to: fromColorSpace, intent: .defaultIntent, options: nil)! : byCGColor
-        
+
         let fromComponents = fromCGColor.components!
         let byComponents = byConverted.components!
         var relativeComponents = [CGFloat](repeating: 0, count: fromCGColor.numberOfComponents)
         for i in 0..<fromCGColor.numberOfComponents {
             relativeComponents[i] = fromComponents[i] + byComponents[i]
         }
-        
+
         let resultColor = CGColor(colorSpace: fromColorSpace, components: relativeComponents)!
         #if os(macOS)
         return SKColor(cgColor: resultColor)!

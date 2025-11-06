@@ -1,7 +1,7 @@
 import SpriteKit
 
 public extension SKNode {
-    
+
     /// Scales a `SKNode` instance on both axis
     ///
     /// As `SKNode` provides only single-axis scale getters, we use the scale on the X axis as the starting scale
@@ -26,7 +26,7 @@ public extension SKNode {
         }
         return tween
     }
-    
+
     /// Scales a `SKNode` instance on the X axis only
     ///
     /// As `SKNode` provides only single-axis scale getters, we use the scale on the X axis as the starting scale
@@ -51,7 +51,7 @@ public extension SKNode {
         }
         return tween
     }
-    
+
     /// Scales a `SKNode` instance on the Y axis only
     ///
     /// As `SKNode` provides only single-axis scale getters, we use the scale on the X axis as the starting scale
@@ -76,5 +76,5 @@ public extension SKNode {
         }
         return tween
     }
-    
+
 }

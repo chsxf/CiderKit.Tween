@@ -10,31 +10,31 @@ import Foundation
 /// - They are type-agnostic, so there is no stream of update values available
 /// - Their duration is defined by their content
 public actor Sequence {
-    
+
     internal private(set) var entries = [SequenceEntry]() {
         didSet {
             computeTotalDuration()
         }
     }
-    
+
     internal private(set) var totalDuration: TimeInterval
     internal let manualUpdate: Bool
-    
+
     private let onStartContinuation: AsyncStream<Void>.Continuation
     /// This `AsyncStream` will produce one `Void` value when the sequence starts
     ///
     /// > Warning: You have to await for this `AsyncStream` values before the sequence has started to receive values
     public let onStart: AsyncStream<Void>
-    
+
     private let onCompletionContinuation: AsyncStream<Void>.Continuation
     /// This `AsyncStream` will produce one `Void` value when the sequence completes
     public let onCompletion: AsyncStream<Void>
-    
+
     internal private(set) var elapsedTime: TimeInterval = 0
     private var startHasBeenNotified: Bool = false
     private var isRunning = true
     internal private(set) var isComplete = false
-    
+
     /// Initializes a new `Sequence` instance
     /// - Parameter manualUpdate: If set, the sequence won't be animated automatically and you will be resposible for calling ```update(additionalElapsedTime:)```
     public init(manualUpdate: Bool = false) async {
@@ -42,12 +42,12 @@ public actor Sequence {
         totalDuration = 0
         (onStart, onStartContinuation) = AsyncStream<Void>.makeStream(bufferingPolicy: .bufferingNewest(0))
         (onCompletion, onCompletionContinuation) = AsyncStream<Void>.makeStream(bufferingPolicy: .bufferingNewest(0))
-        
+
         if !manualUpdate {
             await TweenManager.shared.register(sequence: self)
         }
     }
-    
+
     private func computeTotalDuration() {
         totalDuration = 0
         for entry in entries {
@@ -57,7 +57,7 @@ public actor Sequence {
             }
         }
     }
-    
+
     /// Insert a ```Tween``` instance at the specific timestamp in the sequence
     /// - Parameters:
     ///     - at: timestamp at which insert the ```Tween``` instance
@@ -69,7 +69,7 @@ public actor Sequence {
         }
         entries.append(await SequenceEntry(startAt: at, tweenInstance: tween.instance))
     }
-    
+
     /// Insert a ```Sequence``` instance at the specific timestamp in the sequence
     /// - Parameters:
     ///     - at: timestamp at which insert the ```Sequence``` instance
@@ -81,7 +81,7 @@ public actor Sequence {
         }
         entries.append(await SequenceEntry(startAt: at, sequence: sequence))
     }
-    
+
     /// Appends a ```Tween``` instance at the end of the sequence
     ///
     /// > Note: Calling this function is the same as calling ```insert(at:tween:)```
@@ -91,7 +91,7 @@ public actor Sequence {
     public func append<T: Sendable>(tween: Tween<T>) async throws {
         try await insert(at: totalDuration, tween: tween)
     }
-    
+
     /// Appends a ```Sequence``` instance at the end of the sequence
     ///
     /// > Note: Calling this function is the same as calling ```insert(at:sequence:)```
@@ -101,7 +101,7 @@ public actor Sequence {
     public func append(sequence: Sequence) async throws {
         try await insert(at: totalDuration, sequence: sequence)
     }
-    
+
     /// Progress the sequence by a certain amount of time in seconds
     ///
     /// > Note: You should only call this function if the sequence is not updated automatically by the ```TweenManager```
@@ -111,13 +111,13 @@ public actor Sequence {
         guard isRunning && !isComplete && additionalElapsedTime > 0 && !entries.isEmpty else {
             return
         }
-        
+
         if !startHasBeenNotified {
             onStartContinuation.yield()
             onStartContinuation.finish()
             startHasBeenNotified = true
         }
-        
+
         let previousElapsedTime = elapsedTime
         let applicableAdditionalElapsedTime: TimeInterval
         var shouldComplete = false
@@ -135,20 +135,18 @@ public actor Sequence {
         else {
             applicableAdditionalElapsedTime = additionalElapsedTime
         }
-        
-        for entry in entries {
-            if entry.startAt <= elapsedTime {
-                let diffStart = previousElapsedTime <= entry.startAt ? entry.startAt : previousElapsedTime
-                let elapsedTimeForSequence = min(applicableAdditionalElapsedTime, elapsedTime - diffStart)
-                await entry.update(additionalElapsedTime: elapsedTimeForSequence)
-            }
+
+        for entry in entries where entry.startAt <= elapsedTime {
+            let diffStart = previousElapsedTime <= entry.startAt ? entry.startAt : previousElapsedTime
+            let elapsedTimeForSequence = min(applicableAdditionalElapsedTime, elapsedTime - diffStart)
+            await entry.update(additionalElapsedTime: elapsedTimeForSequence)
         }
-        
+
         if shouldComplete {
             await stop(complete: true)
         }
     }
-    
+
     /// Stops the sequence
     ///
     /// - Parameter complete: if set, the sequence will progress to its duration value before stopping
@@ -160,13 +158,13 @@ public actor Sequence {
             }
             isComplete = true
         }
-        
+
         isRunning = false
 
         for entry in entries {
             await entry.stop()
         }
-        
+
         if complete {
             onCompletionContinuation.yield()
         }
@@ -176,5 +174,5 @@ public actor Sequence {
             await TweenManager.shared.unregister(sequence: self)
         }
     }
-    
+
 }

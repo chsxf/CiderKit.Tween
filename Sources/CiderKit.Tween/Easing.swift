@@ -177,7 +177,7 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
     public static func steps(_ stepCount: UInt, jumpType: StepJumpType) throws -> Easing {
         return .custom(try EasingFunctions.steps(stepCount, jumpType: jumpType), "steps(\(stepCount), \(jumpType))")
     }
-    
+
     /// Creates an easing compatible with the CSS `cubic-bezier()` function
     ///
     /// See [this page](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier) for more information
@@ -188,7 +188,7 @@ public enum Easing: CaseIterable, Sendable, Codable, CustomStringConvertible {
     public static func cubicBezier(c1: CGPoint, c2: CGPoint) -> Easing {
         return .custom(EasingFunctions.cubicBezier(c1: c1, c2: c2), "cubic-bezier(\(c1.x), \(c1.y), \(c2.x), \(c2.y))")
     }
-    
+
     /// Decodes an easing case from its ```description```
     ///
     /// For example, `"In Sine"` will be decoded as ```inSine```
