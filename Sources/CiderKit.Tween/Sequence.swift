@@ -175,4 +175,15 @@ public actor Sequence {
         }
     }
 
+    /// Awaitable function that returns when the sequence is complete
+    /// - Returns: `true` if the sequence actually completes, or `false` either
+    @discardableResult
+    public func waitForCompletion() async -> Bool {
+        var completed = false
+        for await _ in onCompletion {
+            completed = true
+        }
+        return completed
+    }
+
 }

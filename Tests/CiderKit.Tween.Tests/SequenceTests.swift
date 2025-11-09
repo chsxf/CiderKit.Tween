@@ -160,7 +160,7 @@ struct SequenceTests {
         }
     }
 
-    @Test func sequenceWithTest() async throws {
+    @Test func sequenceWithLoopingTweenTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
         let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
@@ -182,6 +182,46 @@ struct SequenceTests {
         #expect(await secondTween.isComplete)
         #expect(await !loopingTween.isComplete)
         #expect(await sequence.isComplete)
+    }
+
+    @Test func waitForCompletionTest() async throws {
+        let sequence = await Sequence(manualUpdate: true)
+
+        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        try await sequence.append(tween: firstTween)
+
+        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        try await sequence.append(tween: secondTween)
+
+        let completionTask = Task {
+            await sequence.waitForCompletion()
+        }
+
+        try await Task.sleep(nanoseconds: tweenTaskDelay)
+        await sequence.update(additionalElapsedTime: 10)
+
+        let completionValue = await completionTask.value
+        #expect(completionValue)
+    }
+
+    @Test func waitForCompletionWithoutCompletionTest() async throws {
+        let sequence = await Sequence(manualUpdate: true)
+
+        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        try await sequence.append(tween: firstTween)
+
+        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        try await sequence.append(tween: secondTween)
+
+        let completionTask = Task {
+            await sequence.waitForCompletion()
+        }
+
+        try await Task.sleep(nanoseconds: tweenTaskDelay)
+        await sequence.stop(complete: false)
+
+        let completionValue = await completionTask.value
+        #expect(!completionValue)
     }
 
 }

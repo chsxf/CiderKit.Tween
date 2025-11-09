@@ -74,7 +74,7 @@ struct TweenTests {
         #expect(completionValue)
     }
 
-    @Test func stopAndDontCompleteTest() async throws {
+    @Test func stopAndDoNotCompleteTest() async throws {
         let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
 
         let completionTask = Task {
@@ -91,6 +91,34 @@ struct TweenTests {
         }
 
         let (completionValue, _) = try await (completionTask.value, tweenTask.value)
+        #expect(!completionValue)
+    }
+
+    @Test func waitForCompletionTest() async throws {
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+
+        let waitForCompletionTask = Task {
+            return await tween.waitForCompletion()
+        }
+
+        try await Task.sleep(nanoseconds: tweenTaskDelay)
+        await tween.update(additionalElapsedTime: Self.duration)
+
+        let completionValue = await waitForCompletionTask.value
+        #expect(completionValue)
+    }
+
+    @Test func waitForCompletionWithoutCompletionTest() async throws {
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+
+        let waitForCompletionTask = Task {
+            return await tween.waitForCompletion()
+        }
+
+        try await Task.sleep(nanoseconds: tweenTaskDelay)
+        await tween.stop(complete: false)
+
+        let completionValue = await waitForCompletionTask.value
         #expect(!completionValue)
     }
 

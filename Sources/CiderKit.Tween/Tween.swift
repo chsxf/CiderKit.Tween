@@ -50,4 +50,15 @@ public struct Tween<T: Sendable>: Sendable {
         await instance.stop(complete: complete)
     }
 
+    /// Awaitable function that returns when the tween is complete
+    /// - Returns: `true` if the tween actually completes, or `false` either
+    @discardableResult
+    public func waitForCompletion() async -> Bool {
+        var completed = false
+        for await _ in data.onCompletion {
+            completed = true
+        }
+        return completed
+    }
+
 }
