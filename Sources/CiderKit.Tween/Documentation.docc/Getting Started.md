@@ -12,7 +12,7 @@ To install it, simply add the dependency to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chsxf/CiderTween.Kit.git", requirement: .branch("main")),
+    .package(url: "https://github.com/chsxf/CiderKit.Tween.git", from: "0.5.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: ["CiderKit.Tween"]),
@@ -21,8 +21,8 @@ targets: [
 
 ### As a Project Dependency in Xcode
 
-- In Xcode, select **File > Add Packages...** and enter `https://github.com/chsxf/CiderTween.Kit.git` in the search field (top-right). 
-- Then select **Branch** as the **Dependency Rule** with `main` in the associated text field.
+- In Xcode, select **File > Add Packages...** and enter `https://github.com/chsxf/CiderKit.Tween.git` in the search field (top-right). 
+- Then select **Up to Next Major Version** as the **Dependency Rule** with `0.5.0` in the associated text field.
 - Then select the project of your choice in the **Add to Project** list.
 - Finally, click the **Add Package** button.
 
