@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-11-16
+
+### Added
+
+- CSS-compatible easing functions (#7)
+- `waitForCompletion` helper function
+
 ## [0.4.0] - 2025-09-29
 
 ### Added 
