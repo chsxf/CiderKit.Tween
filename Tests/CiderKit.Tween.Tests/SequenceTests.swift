@@ -3,13 +3,15 @@ import Testing
 
 struct SequenceTests {
 
+    private static let defaultOptions = TweenOptions(duration: 5, manualUpdate: true)
+
     @Test func simpleSequenceTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
 
         #expect(await sequence.totalDuration == 10)
@@ -60,10 +62,10 @@ struct SequenceTests {
     @Test func stopBeforeEndSequenceTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
 
         let firstTweenCompletion = Task {
@@ -104,10 +106,10 @@ struct SequenceTests {
     @Test func stopBeforeEndWithCompletionSequenceTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
 
         let firstTweenCompletion = Task {
@@ -148,13 +150,13 @@ struct SequenceTests {
     @Test func editAfterStartSequenceTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
         try await Task.sleep(nanoseconds: tweenTaskDelay)
         await sequence.update(additionalElapsedTime: 1)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         await #expect(throws: SequenceError.modificationAfterStart) {
             try await sequence.append(tween: secondTween)
         }
@@ -163,15 +165,15 @@ struct SequenceTests {
     @Test func sequenceWithLoopingTweenTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
         #expect(await sequence.totalDuration == 5)
 
-        let loopingTween = await Float.tween(.fromTo(0, 1), duration: 1, manualUpdate: true, loopingType: .normal(loopCount: 0))
+        let loopingTween = await Float.tween(.fromTo(0, 1), options: .init(duration: 1, loopingType: .normal(loopCount: 0), manualUpdate: true))
         try await sequence.append(tween: loopingTween)
         #expect(await sequence.totalDuration == 5)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
         #expect(await sequence.totalDuration == 10)
 
@@ -187,10 +189,10 @@ struct SequenceTests {
     @Test func waitForCompletionTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
 
         let completionTask = Task {
@@ -207,10 +209,10 @@ struct SequenceTests {
     @Test func waitForCompletionWithoutCompletionTest() async throws {
         let sequence = await Sequence(manualUpdate: true)
 
-        let firstTween = await Float.tween(.fromTo(0, 10), duration: 5, manualUpdate: true)
+        let firstTween = await Float.tween(.fromTo(0, 10), options: Self.defaultOptions)
         try await sequence.append(tween: firstTween)
 
-        let secondTween = await Float.tween(.fromTo(20, 30), duration: 5, manualUpdate: true)
+        let secondTween = await Float.tween(.fromTo(20, 30), options: Self.defaultOptions)
         try await sequence.append(tween: secondTween)
 
         let completionTask = Task {

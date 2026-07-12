@@ -10,17 +10,17 @@ This extension provides instance methods to facilitate the creation of tweens fo
 
 ### Color
 
-- ``tweenColor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenColorBlendFactor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenFontColor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenColor(_:options:setupUpdate:)``
+- ``tweenColorBlendFactor(_:options:setupUpdate:)``
+- ``tweenFontColor(_:options:setupUpdate:)``
 
 ### Font
 
-- ``tweenFontColor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenFontSize(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenFontColor(_:options:setupUpdate:)``
+- ``tweenFontSize(_:options:setupUpdate:)``
 
 ### Text
 
-- ``tweenNumberOfLines(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenPreferredMaxLayoutWidth(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenText(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenNumberOfLines(_:options:setupUpdate:)``
+- ``tweenPreferredMaxLayoutWidth(_:options:setupUpdate:)``
+- ``tweenText(_:options:setupUpdate:)``

@@ -19,7 +19,7 @@ struct SKColorTweenTests {
 
     @Test("SKColor Tween Test", .tags(.spriteKitTweenTest))
     func tweenTest() async throws {
-        let tween = await SKColor.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await SKColor.tween(.fromTo(Self.from, Self.to), options: .init(duration: Self.duration, manualUpdate: true))
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 

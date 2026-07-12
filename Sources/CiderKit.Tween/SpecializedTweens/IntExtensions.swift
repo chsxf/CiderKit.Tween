@@ -15,13 +15,10 @@ public extension Int {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<Int>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<Int> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<Int>, options: TweenOptions) async -> Tween<Int> {
         let data = travel.toTweenData(interpolator: intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -46,13 +43,10 @@ public extension SIMD2<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD2<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD2<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD2<Int>>, options: TweenOptions) async -> Tween<SIMD2<Int>> {
         let data = travel.toTweenData(interpolator: simd2intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -77,13 +71,10 @@ public extension SIMD3<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD3<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD3<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD3<Int>>, options: TweenOptions) async -> Tween<SIMD3<Int>> {
         let data = travel.toTweenData(interpolator: simd3intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -108,13 +99,10 @@ public extension SIMD4<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD4<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD4<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD4<Int>>, options: TweenOptions) async -> Tween<SIMD4<Int>> {
         let data = travel.toTweenData(interpolator: simd4intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -139,13 +127,10 @@ public extension SIMD8<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD8<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD8<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD8<Int>>, options: TweenOptions) async -> Tween<SIMD8<Int>> {
         let data = travel.toTweenData(interpolator: simd8intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -170,13 +155,10 @@ public extension SIMD16<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD16<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD16<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD16<Int>>, options: TweenOptions) async -> Tween<SIMD16<Int>> {
         let data = travel.toTweenData(interpolator: simd16intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -201,13 +183,10 @@ public extension SIMD32<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD32<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD32<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD32<Int>>, options: TweenOptions) async -> Tween<SIMD32<Int>> {
         let data = travel.toTweenData(interpolator: simd32intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }
@@ -232,13 +211,10 @@ public extension SIMD64<Int> {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<SIMD64<Int>>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async -> Tween<SIMD64<Int>> {
+    ///     - options: Options for this tween
+    static func tween(_ travel: TweenDetailedTravel<SIMD64<Int>>, options: TweenOptions) async -> Tween<SIMD64<Int>> {
         let data = travel.toTweenData(interpolator: simd64intTweenInterpolator(from:to:easedValue:))
-        return await Tween(data: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: data, options: options)
     }
 
 }

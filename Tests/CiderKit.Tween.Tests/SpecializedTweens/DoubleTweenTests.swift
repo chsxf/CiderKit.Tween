@@ -11,9 +11,11 @@ struct DoubleTweenTests {
     private static let expectedValues: [Double] = [
         20.000000298023224, 40.00000059604645, 60.00000238418579, 80.0000011920929, 100]
 
+    private static let defaultOptions = TweenOptions(duration: Self.duration, manualUpdate: true)
+
     @Test("Double Tween Test", .tags(.specializedTweenTest))
     func tweenTest() async throws {
-        let tween = await Double.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Double.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 
@@ -40,7 +42,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD2<Double> Tween Test", .tags(.specializedTweenTest))
     func simd2tweenTest() async throws {
-        let tween = await SIMD2<Double>.tween(.fromTo(Self.simd2From, Self.simd2To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD2<Double>.tween(.fromTo(Self.simd2From, Self.simd2To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd2ExpectedValues)
 
@@ -67,7 +69,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD3<Double> Tween Test", .tags(.specializedTweenTest))
     func simd3tweenTest() async throws {
-        let tween = await SIMD3<Double>.tween(.fromTo(Self.simd3From, Self.simd3To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD3<Double>.tween(.fromTo(Self.simd3From, Self.simd3To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd3ExpectedValues)
 
@@ -88,7 +90,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD4<Double> Tween Test", .tags(.specializedTweenTest))
     func simd4tweenTest() async throws {
-        let tween = await SIMD4<Double>.tween(.fromTo(Self.simd4From, Self.simd4To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD4<Double>.tween(.fromTo(Self.simd4From, Self.simd4To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd4ExpectedValues)
 
@@ -109,7 +111,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD8<Double> Tween Test", .tags(.specializedTweenTest))
     func simd8tweenTest() async throws {
-        let tween = await SIMD8<Double>.tween(.fromTo(Self.simd8From, Self.simd8To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD8<Double>.tween(.fromTo(Self.simd8From, Self.simd8To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd8ExpectedValues)
 
@@ -130,7 +132,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD16<Double> Tween Test", .tags(.specializedTweenTest))
     func simd16tweenTest() async throws {
-        let tween = await SIMD16<Double>.tween(.fromTo(Self.simd16From, Self.simd16To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD16<Double>.tween(.fromTo(Self.simd16From, Self.simd16To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd16ExpectedValues)
 
@@ -151,7 +153,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD32<Double> Tween Test", .tags(.specializedTweenTest))
     func simd32tweenTest() async throws {
-        let tween = await SIMD32<Double>.tween(.fromTo(Self.simd32From, Self.simd32To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD32<Double>.tween(.fromTo(Self.simd32From, Self.simd32To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd32ExpectedValues)
 
@@ -172,7 +174,7 @@ struct DoubleTweenTests {
 
     @Test("SIMD64<Double> Tween Test", .tags(.specializedTweenTest))
     func simd64tweenTest() async throws {
-        let tween = await SIMD64<Double>.tween(.fromTo(Self.simd64From, Self.simd64To), duration: Self.duration, manualUpdate: true)
+        let tween = await SIMD64<Double>.tween(.fromTo(Self.simd64From, Self.simd64To), options: Self.defaultOptions)
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.simd64ExpectedValues)
 

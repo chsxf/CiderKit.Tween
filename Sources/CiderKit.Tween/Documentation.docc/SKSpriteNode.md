@@ -10,14 +10,14 @@ This extension provides instance methods to facilitate the creation of tweens fo
 
 ### Color
 
-- ``tweenColor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenColorBlendFactor(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenColor(_:options:setupUpdate:)``
+- ``tweenColorBlendFactor(_:options:setupUpdate:)``
 
 ### Size and Position
 
-- ``tweenAnchorPoint(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``tweenSize(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenAnchorPoint(_:options:setupUpdate:)``
+- ``tweenSize(_:options:setupUpdate:)``
 
 ### Scaling a Sprite in Nine Parts
 
-- ``tweenCenterRect(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenCenterRect(_:options:setupUpdate:)``

@@ -68,17 +68,13 @@ public extension String {
     ///
     /// - Parameters:
     ///     - travel: Description of the starting and ending values for the tween
-    ///     - duration: Duration in seconds of the tween
+    ///     - options: Options for this tween
     ///     - scramble: If set, unrevealed characters will be replaced by random characters
     ///     - scrambleCharacters: Pool of characters to use as scramble replacement. If `nil`, a pool containing lower-case and upper-case letters, and digits is used
-    ///     - easing: ```Easing``` type to apply
-    ///     - manualUpdate: If set, the tween won't be automatically updated and you will be responsible for calling the ```Tween/update(additionalElapsedTime:)``` method to make it progress
-    ///     - loopingType: Defines if and how the tween will loop. Defaults to `.none`
-    static func tween(_ travel: TweenDetailedTravel<String>, duration: TimeInterval, scramble: Bool = false, scrambleCharacters: String? = nil, easing: Easing = Easing.linear, manualUpdate: Bool = false,
-                      loopingType: LoopingType = .none) async -> Tween<String> {
+    static func tween(_ travel: TweenDetailedTravel<String>, options: TweenOptions, scramble: Bool = false, scrambleCharacters: String? = nil) async -> Tween<String> {
         let interpolator = parametrizedStringTweenInterpolator(scrambled: scramble, scrambleCharacters: scrambleCharacters)
         let tweenData = travel.toTweenData(interpolator: interpolator)
-        return await Tween(data: tweenData, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        return await Tween(data: tweenData, options: options)
     }
 
 }

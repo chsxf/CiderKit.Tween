@@ -5,13 +5,9 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
     private typealias UpdateFunction = (TimeInterval) async -> Void
 
     private let tweenData: TweenData<T>
-    internal let manualUpdate: Bool
+    internal let options: TweenOptions
 
-    internal let duration: TimeInterval
     internal private(set) var elapsedTime: TimeInterval = 0
-
-    internal let easing: Easing
-    internal let loopingType: LoopingType
 
     private var startValue: T
     internal private(set) var currentLoopNumber: UInt = 1
@@ -21,7 +17,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
     private var startHasBeenNotified = false
     private var updateFunction: UpdateFunction!
 
-    internal var loopCount: UInt { Self.computeLoopCount(loopingType: loopingType) }
+    internal var loopCount: UInt { Self.computeLoopCount(loopingType: options.loopingType) }
     internal var isLooping: Bool { Self.computeIsLooping(loopCount: loopCount) }
     private var isLastLoop: Bool {
         let loopCount = loopCount
@@ -29,7 +25,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
     }
 
     private var isMovingForward: Bool {
-        switch loopingType {
+        switch options.loopingType {
             case .pingPong:
                 return currentLoopNumber % 2 == 1
             default:
@@ -37,20 +33,16 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         }
     }
 
-    internal init(tweenData: TweenData<T>, duration: TimeInterval, easing: Easing, manualUpdate: Bool, loopingType: LoopingType) async {
+    internal init(tweenData: TweenData<T>, options: TweenOptions) async {
         // If deferred, startValue can be wrong but we need to get an actual value if the tween is stopped before being started
         self.startValue = await tweenData.from
 
         self.tweenData = tweenData
-        self.manualUpdate = manualUpdate
+        self.options = options
 
-        self.duration = duration
-        self.easing = easing
-        self.loopingType = loopingType
-
-        let loopCount = Self.computeLoopCount(loopingType: loopingType)
+        let loopCount = Self.computeLoopCount(loopingType: options.loopingType)
         let isLooping = Self.computeIsLooping(loopCount: loopCount)
-        if case .pingPong = loopingType {
+        if case .pingPong = options.loopingType {
             updateFunction = pingPongUpdate
         }
         else if isLooping {
@@ -60,7 +52,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
             updateFunction = singleLoopUpdate
         }
 
-        if !manualUpdate {
+        if !options.manualUpdate {
             await TweenManager.shared.register(tweenInstance: self)
         }
     }
@@ -94,8 +86,8 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
 
         await updateFunction(additionalElapsedTime)
 
-        let elapsedTimeRatio = Float(elapsedTime / duration)
-        let easedValue = easing.easingFunction()(elapsedTimeRatio)
+        let elapsedTimeRatio = Float(elapsedTime / options.duration)
+        let easedValue = options.easing.easingFunction()(elapsedTimeRatio)
 
         if isComplete {
             await stop(complete: isComplete)
@@ -107,8 +99,8 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
 
     private func singleLoopUpdate(additionalElapsedTime: TimeInterval) async {
         elapsedTime += additionalElapsedTime
-        if elapsedTime >= duration {
-            elapsedTime = duration
+        if elapsedTime >= options.duration {
+            elapsedTime = options.duration
             isComplete = true
         }
     }
@@ -118,14 +110,14 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         let isLastLoop = isLastLoop
 
         elapsedTime += additionalElapsedTime
-        if elapsedTime >= duration {
+        if elapsedTime >= options.duration {
             loopCompleted = true
             if isLastLoop {
-                elapsedTime = duration
+                elapsedTime = options.duration
                 isComplete = true
             }
             else {
-                elapsedTime = elapsedTime.truncatingRemainder(dividingBy: duration)
+                elapsedTime = elapsedTime.truncatingRemainder(dividingBy: options.duration)
             }
         }
 
@@ -143,14 +135,14 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
 
         if isMovingForward {
             elapsedTime += additionalElapsedTime
-            if elapsedTime >= duration {
+            if elapsedTime >= options.duration {
                 loopCompleted = true
                 if isLastLoop {
-                    elapsedTime = duration
+                    elapsedTime = options.duration
                     isComplete = true
                 }
                 else {
-                    elapsedTime = duration - elapsedTime.truncatingRemainder(dividingBy: duration)
+                    elapsedTime = options.duration - elapsedTime.truncatingRemainder(dividingBy: options.duration)
                 }
             }
         }
@@ -181,15 +173,15 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
 
         if complete {
             var completeEasedValue: Float = 1
-            if case let .pingPong(loopCount) = loopingType, loopCount > 1, loopCount % 2 == 0 {
+            if case let .pingPong(loopCount) = options.loopingType, loopCount > 1, loopCount % 2 == 0 {
                 completeEasedValue = 0
             }
-            let easedValue = easing.easingFunction()(completeEasedValue)
+            let easedValue = options.easing.easingFunction()(completeEasedValue)
             tweenData.apply(from: startValue, easedValue: easedValue)
         }
         tweenData.finish(complete: complete)
 
-        if !manualUpdate {
+        if !options.manualUpdate {
             await TweenManager.shared.unregister(tweenInstance: self)
         }
     }

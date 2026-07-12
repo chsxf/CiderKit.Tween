@@ -11,8 +11,10 @@ struct TweenTests {
     private static let loopTimeIncrement: TimeInterval = 6
     private static let updateLoops: Int = 5
 
+    private static let defaultOptions = TweenOptions(duration: Self.duration, manualUpdate: true)
+
     @Test func eventTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let startTask = Task {
             var startRegistered = false
@@ -55,7 +57,7 @@ struct TweenTests {
     }
 
     @Test func stopAndCompleteTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let completionTask = Task {
             var completionRegistered = false
@@ -75,7 +77,7 @@ struct TweenTests {
     }
 
     @Test func stopAndDoNotCompleteTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let completionTask = Task {
             var completionRegistered = false
@@ -95,7 +97,7 @@ struct TweenTests {
     }
 
     @Test func waitForCompletionTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let waitForCompletionTask = Task {
             return await tween.waitForCompletion()
@@ -109,7 +111,7 @@ struct TweenTests {
     }
 
     @Test func waitForCompletionWithoutCompletionTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let waitForCompletionTask = Task {
             return await tween.waitForCompletion()
@@ -123,7 +125,7 @@ struct TweenTests {
     }
 
     @Test func linearLoopTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true, loopingType: .normal(loopCount: 3))
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: .init(duration: Self.duration, loopingType: .normal(loopCount: 3), manualUpdate: true))
 
         let completionTask = Task {
             var completionRegistered = false
@@ -160,7 +162,7 @@ struct TweenTests {
     }
 
     @Test func pingPongLoopTest() async throws {
-        let tween = await Float.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true, loopingType: .pingPong(loopCount: 4))
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: .init(duration: Self.duration, loopingType: .pingPong(loopCount: 4), manualUpdate: true))
 
         let completionTask = Task {
             var completionRegistered = false

@@ -20,13 +20,10 @@ public struct Tween<T: Sendable>: Sendable {
     ///
     /// - Parameters:
     ///     - data: Data for the tween (start and end values, and interpolation function)
-    ///     - duration: Duration in seconds of the tween
-    ///     - easing: Easing type (defaults to ```Easing/linear```
-    ///     - manualUpdate: If set, the tween won't be animated automatically and you will be resposible for calling ```update(additionalElapsedTime:)```
-    ///     - loopingType: Defines how the tween loops. Defaults to `.none`
-    public init(data: TweenData<T>, duration: TimeInterval, easing: Easing = .linear, manualUpdate: Bool = false, loopingType: LoopingType = .none) async {
+    ///     - options: Options for this tween
+    public init(data: TweenData<T>, options: TweenOptions) async {
         self.data = data
-        instance = await TweenInstanceActor(tweenData: data, duration: duration, easing: easing, manualUpdate: manualUpdate, loopingType: loopingType)
+        instance = await TweenInstanceActor(tweenData: data, options: options)
     }
 
     /// Dymamic accessor for members of ```TweenData```.

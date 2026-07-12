@@ -64,7 +64,7 @@ public actor Sequence {
     ///     - tween: ```Tween``` instance to insert
     public func insert<T: Sendable>(at: TimeInterval, tween: Tween<T>) async throws {
         guard !startHasBeenNotified else { throw SequenceError.modificationAfterStart }
-        if !tween.instance.manualUpdate {
+        if !tween.instance.options.manualUpdate {
             await TweenManager.shared.unregister(tweenInstance: tween.instance)
         }
         entries.append(await SequenceEntry(startAt: at, tweenInstance: tween.instance))

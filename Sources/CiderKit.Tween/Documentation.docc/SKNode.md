@@ -10,25 +10,25 @@ This extension provides instance methods to facilitate the creation of tweens fo
 
 ### Position
 
-- ``move(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``moveX(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``moveY(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``moveZ(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``move(_:options:setupUpdate:)``
+- ``moveX(_:options:setupUpdate:)``
+- ``moveY(_:options:setupUpdate:)``
+- ``moveZ(_:options:setupUpdate:)``
 
 ### Rotation
 
-- ``rotate(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``rotate(_:options:setupUpdate:)``
 
 ### Scale
 
-- ``scale(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``scaleX(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
-- ``scaleY(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``scale(_:options:setupUpdate:)``
+- ``scaleX(_:options:setupUpdate:)``
+- ``scaleY(_:options:setupUpdate:)``
 
 ### Alpha
 
-- ``fade(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``fade(_:options:setupUpdate:)``
 
 ### Speed
 
-- ``tweenSpeed(_:duration:easing:manualUpdate:loopingType:setupUpdate:)``
+- ``tweenSpeed(_:options:setupUpdate:)``

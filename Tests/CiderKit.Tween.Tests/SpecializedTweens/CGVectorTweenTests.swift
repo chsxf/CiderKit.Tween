@@ -18,7 +18,7 @@ struct CGVectorTweenTests {
 
     @Test("CGVector Tween Test", .tags(.specializedTweenTest))
     func tweenTest() async throws {
-        let tween = await CGVector.tween(.fromTo(Self.from, Self.to), duration: Self.duration, manualUpdate: true)
+        let tween = await CGVector.tween(.fromTo(Self.from, Self.to), options: .init(duration: Self.duration, manualUpdate: true))
 
         let updateTask = genericUpdateTask(tween: tween, expectedValues: Self.expectedValues)
 

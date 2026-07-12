@@ -30,7 +30,7 @@ internal struct SequenceEntry: Sendable {
         sequence = nil
         self.tweenInstance = tweenInstance
         let loopCount = await tweenInstance.loopCount
-        duration = loopCount == 0 ? 0 : await tweenInstance.duration * Double(loopCount)
+        duration = loopCount == 0 ? 0 : await tweenInstance.options.duration * Double(loopCount)
     }
 
     func update(additionalElapsedTime: TimeInterval) async {

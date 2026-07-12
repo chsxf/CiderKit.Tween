@@ -2,7 +2,7 @@ import Foundation
 
 internal protocol TweenInstance: AnyObject, Sendable {
 
-    var duration: TimeInterval { get async }
+    var options: TweenOptions { get async }
     var elapsedTime: TimeInterval { get async }
 
     var isRunning: Bool { get async }
