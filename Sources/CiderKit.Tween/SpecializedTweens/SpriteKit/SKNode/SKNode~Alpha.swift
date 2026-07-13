@@ -14,7 +14,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAlpha in tween.onUpdate {
+                for await updatedAlpha in await tween.onUpdate {
                     await MainActor.run { self.alpha = updatedAlpha }
                 }
             }

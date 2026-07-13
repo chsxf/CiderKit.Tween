@@ -16,7 +16,7 @@ public extension SKSpriteNode {
         let tween = await CGSize.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedSize in tween.onUpdate {
+                for await updatedSize in await tween.onUpdate {
                     await MainActor.run { self.size = updatedSize }
                 }
             }
@@ -38,7 +38,7 @@ public extension SKSpriteNode {
         let tween = await CGPoint.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAnchorPoint in tween.onUpdate {
+                for await updatedAnchorPoint in await tween.onUpdate {
                     await MainActor.run { self.anchorPoint = updatedAnchorPoint }
                 }
             }

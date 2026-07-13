@@ -14,7 +14,7 @@ public extension SKNode {
         let tween = await CGPoint.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedPosition in tween.onUpdate {
+                for await updatedPosition in await tween.onUpdate {
                     await MainActor.run { self.position = updatedPosition }
                 }
             }
@@ -34,7 +34,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedPosition in tween.onUpdate {
+                for await updatedPosition in await tween.onUpdate {
                     await MainActor.run {
                         var pos = self.position
                         pos.x = updatedPosition
@@ -59,7 +59,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedPosition in tween.onUpdate {
+                for await updatedPosition in await tween.onUpdate {
                     await MainActor.run {
                         var pos = self.position
                         pos.y = updatedPosition
@@ -84,7 +84,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedPosition in tween.onUpdate {
+                for await updatedPosition in await tween.onUpdate {
                     await MainActor.run { self.zPosition = updatedPosition }
                 }
             }

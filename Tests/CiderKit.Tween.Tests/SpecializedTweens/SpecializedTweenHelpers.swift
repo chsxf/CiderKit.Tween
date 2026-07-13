@@ -6,7 +6,7 @@ func genericUpdateTask<T: Sendable & Equatable>(tween: Tween<T>, expectedValues:
         var currentIndex = 0
         var returnValue = expectedValues[0]
 
-        for await updatedValue in tween.onUpdate {
+        for await updatedValue in await tween.onUpdate {
             returnValue = updatedValue
 
             let expectedValue = expectedValues[currentIndex]

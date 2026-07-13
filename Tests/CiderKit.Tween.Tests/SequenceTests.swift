@@ -18,7 +18,7 @@ struct SequenceTests {
 
         let firstTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in firstTween.onCompletion {
+            for await _ in await firstTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -26,7 +26,7 @@ struct SequenceTests {
 
         let secondTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in secondTween.onCompletion {
+            for await _ in await secondTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -70,7 +70,7 @@ struct SequenceTests {
 
         let firstTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in firstTween.onCompletion {
+            for await _ in await firstTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -78,7 +78,7 @@ struct SequenceTests {
 
         let secondTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in secondTween.onCompletion {
+            for await _ in await secondTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -114,7 +114,7 @@ struct SequenceTests {
 
         let firstTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in firstTween.onCompletion {
+            for await _ in await firstTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -122,7 +122,7 @@ struct SequenceTests {
 
         let secondTweenCompletion = Task {
             var completionRegistered = false
-            for await _ in secondTween.onCompletion {
+            for await _ in await secondTween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered

@@ -16,7 +16,7 @@ public extension SKSpriteNode {
         let tween = await CGRect.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedCenterRect in tween.onUpdate {
+                for await updatedCenterRect in await tween.onUpdate {
                     await MainActor.run { self.centerRect = updatedCenterRect }
                 }
             }

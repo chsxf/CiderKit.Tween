@@ -13,7 +13,7 @@ public extension SKLabelNode {
         let tween = await SKColor.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedColor in tween.onUpdate {
+                for await updatedColor in await tween.onUpdate {
                     await MainActor.run { self.fontColor = updatedColor }
                 }
             }
@@ -32,7 +32,7 @@ public extension SKLabelNode {
         let tween = await SKColor.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedColor in tween.onUpdate {
+                for await updatedColor in await tween.onUpdate {
                     await MainActor.run { self.color = updatedColor }
                 }
             }
@@ -51,7 +51,7 @@ public extension SKLabelNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedColorBlendFactor in tween.onUpdate {
+                for await updatedColorBlendFactor in await tween.onUpdate {
                     await MainActor.run { self.colorBlendFactor = updatedColorBlendFactor }
                 }
             }

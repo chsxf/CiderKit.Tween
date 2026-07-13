@@ -33,6 +33,11 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         }
     }
 
+    private var onStartStreams = [TweenStream<Void>]()
+    private var onUpdateStreams = [TweenStream<T>]()
+    private var onLoopCompletionStreams = [TweenStream<UInt>]()
+    private var onCompletionStreams = [TweenStream<Void>]()
+
     internal init(tweenData: TweenData<T>, options: TweenOptions) async {
         // If deferred, startValue can be wrong but we need to get an actual value if the tween is stopped before being started
         self.startValue = await tweenData.from
@@ -80,7 +85,11 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         if elapsedTime == 0 && !startHasBeenNotified {
             startValue = await tweenData.deferredFrom()
 
-            tweenData.notifyStart()
+            onStartStreams.forEach {
+                $0.continuation.yield()
+                $0.continuation.finish()
+            }
+            onStartStreams.removeAll()
             startHasBeenNotified = true
         }
 
@@ -93,8 +102,13 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
             await stop(complete: isComplete)
         }
         else {
-            tweenData.apply(from: startValue, easedValue: easedValue)
+            apply(from: startValue, easedValue: easedValue)
         }
+    }
+
+    private func apply(from: T, easedValue: Float) {
+        let current = tweenData.interpolator(from, tweenData.to(from), easedValue)
+        onUpdateStreams.forEach { $0.continuation.yield(current) }
     }
 
     private func singleLoopUpdate(additionalElapsedTime: TimeInterval) async {
@@ -122,7 +136,7 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         }
 
         if loopCompleted {
-            tweenData.notifyLoopCompletion(loopNumber: currentLoopNumber)
+            notifyLoopCompletion(loopNumber: currentLoopNumber)
             if !isLastLoop {
                 currentLoopNumber += 1
             }
@@ -161,11 +175,15 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
         }
 
         if loopCompleted {
-            tweenData.notifyLoopCompletion(loopNumber: currentLoopNumber)
+            notifyLoopCompletion(loopNumber: currentLoopNumber)
             if !isLastLoop {
                 currentLoopNumber += 1
             }
         }
+    }
+
+    private func notifyLoopCompletion(loopNumber: UInt) {
+        onLoopCompletionStreams.forEach { $0.continuation.yield(loopNumber) }
     }
 
     internal func stop(complete: Bool = false) async {
@@ -177,13 +195,50 @@ internal actor TweenInstanceActor<T: Sendable>: TweenInstance {
                 completeEasedValue = 0
             }
             let easedValue = options.easing.easingFunction()(completeEasedValue)
-            tweenData.apply(from: startValue, easedValue: easedValue)
+            apply(from: startValue, easedValue: easedValue)
         }
-        tweenData.finish(complete: complete)
+        finish(complete: complete)
 
         if !options.manualUpdate {
             await TweenManager.shared.unregister(tweenInstance: self)
         }
+    }
+
+    private func finish(complete: Bool) {
+        if complete {
+            onCompletionStreams.forEach { $0.continuation.yield() }
+        }
+
+        onUpdateStreams.forEach { $0.continuation.finish() }
+        onUpdateStreams.removeAll()
+        onLoopCompletionStreams.forEach { $0.continuation.finish() }
+        onLoopCompletionStreams.removeAll()
+        onCompletionStreams.forEach { $0.continuation.finish() }
+        onCompletionStreams.removeAll()
+    }
+
+    internal func makeStartStream() -> AsyncStream<Void> {
+        let newOnStart = TweenStream<Void>()
+        onStartStreams.append(newOnStart)
+        return newOnStart.stream
+    }
+
+    internal func makeUpdateStream() -> AsyncStream<T> {
+        let newOnUpdate = TweenStream<T>()
+        onUpdateStreams.append(newOnUpdate)
+        return newOnUpdate.stream
+    }
+
+    internal func makeLoopCompletionStream() -> AsyncStream<UInt> {
+        let newLoopCompletion = TweenStream<UInt>()
+        onLoopCompletionStreams.append(newLoopCompletion)
+        return newLoopCompletion.stream
+    }
+
+    internal func makeCompletionStream() -> AsyncStream<Void> {
+        let newCompletionStream = TweenStream<Void>()
+        onCompletionStreams.append(newCompletionStream)
+        return newCompletionStream.stream
     }
 
 }

@@ -12,7 +12,7 @@ To install it, simply add the dependency to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chsxf/CiderKit.Tween.git", from: "0.6.0"),
+    .package(url: "https://github.com/chsxf/CiderKit.Tween.git", from: "0.7.0"),
 ],
 targets: [
     .target(name: "YourTarget", dependencies: ["CiderKit.Tween"]),
@@ -22,7 +22,7 @@ targets: [
 ### As a Project Dependency in Xcode
 
 - In Xcode, select **File > Add Packages...** and enter `https://github.com/chsxf/CiderKit.Tween.git` in the search field (top-right). 
-- Then select **Up to Next Major Version** as the **Dependency Rule** with `0.6.0` in the associated text field.
+- Then select **Up to Next Major Version** as the **Dependency Rule** with `0.7.0` in the associated text field.
 - Then select the project of your choice in the **Add to Project** list.
 - Finally, click the **Add Package** button.
 
@@ -38,13 +38,13 @@ First, import the module:
 import CikderKit_Tween
 ```
 
-Then, we have to create the function that will handle our apparition tween. This function is made async as we need to wait for the ``TweenData/onUpdate`` asynchronous sequence of values to play out.
+Then, we have to create the function that will handle our apparition tween. This function is made async as we need to wait for the ``Tween/onUpdate`` asynchronous sequence of values to play out.
 
 ```swift
 func fadeInLabel() async {
     let tween = await CGFloat.tween(from: 0, to: 1, options: .init(duration: 20))
 
-    for await updatedAlpha in tween.onUpdate {
+    for await updatedAlpha in await tween.onUpdate {
         await MainActor.run {
             label?.alpha = updatedAlpha
         }
@@ -68,18 +68,20 @@ Now run your project and you should see your tween animate and the `SKLabelNode`
 
 We can slightly update our `fadeInLabel()` function to receive additional start and completion messages to execution actions when they occur.
 
+> Note: This example is for illustration purposes only. A specific extension exists for fading SKNode instances (```SpriteKit/SKNode/fade(_:options:setupUpdate:)```).
+
 ```swift
 func fadeInLabel() async {
     let tween = await CGFloat.tween(from: 0, to: 1, options: .init(duration: 20))
 
     let startTask = Task {
-        for await _ in tween.onStart {
+        for await _ in await tween.onStart {
             print("Tween started")
         }
     }
 
     let updateTask = Task {
-        for await updatedAlpha in tween.onUpdate {
+        for await updatedAlpha in await tween.onUpdate {
             await MainActor.run {
                 label?.alpha = updatedAlpha
             }
@@ -87,7 +89,7 @@ func fadeInLabel() async {
     }
 
     let completionTask = Task {
-        for await _ in tween.onComplete {
+        for await _ in await tween.onComplete {
             print("Tween ended")
         }
     }

@@ -14,7 +14,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedRotation in tween.onUpdate {
+                for await updatedRotation in await tween.onUpdate {
                     await MainActor.run { self.zRotation = updatedRotation }
                 }
             }

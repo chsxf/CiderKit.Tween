@@ -13,7 +13,7 @@ public extension SKLabelNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedFontSize in tween.onUpdate {
+                for await updatedFontSize in await tween.onUpdate {
                     await MainActor.run { self.fontSize = updatedFontSize }
                 }
             }

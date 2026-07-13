@@ -16,7 +16,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedScale in tween.onUpdate {
+                for await updatedScale in await tween.onUpdate {
                     await MainActor.run { self.setScale(updatedScale) }
                 }
             }
@@ -38,7 +38,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedScale in tween.onUpdate {
+                for await updatedScale in await tween.onUpdate {
                     await MainActor.run { self.xScale = updatedScale }
                 }
             }
@@ -60,7 +60,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedScale in tween.onUpdate {
+                for await updatedScale in await tween.onUpdate {
                     await MainActor.run { self.yScale = updatedScale }
                 }
             }

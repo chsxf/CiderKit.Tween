@@ -14,7 +14,7 @@ public extension SKNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedSpeed in tween.onUpdate {
+                for await updatedSpeed in await tween.onUpdate {
                     await MainActor.run { self.speed = max(0, updatedSpeed) }
                 }
             }

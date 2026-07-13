@@ -18,7 +18,7 @@ struct TweenTests {
 
         let startTask = Task {
             var startRegistered = false
-            for await _ in tween.onStart {
+            for await _ in await tween.onStart {
                 startRegistered = true
             }
             return startRegistered
@@ -26,7 +26,7 @@ struct TweenTests {
 
         let updateTask = Task {
             var updateCount = 0
-            for await _ in tween.onUpdate {
+            for await _ in await tween.onUpdate {
                 updateCount += 1
             }
             return updateCount
@@ -34,7 +34,7 @@ struct TweenTests {
 
         let completionTask = Task {
             var completionRegistered = false
-            for await _ in tween.onCompletion {
+            for await _ in await tween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -56,12 +56,43 @@ struct TweenTests {
         #expect(completionValue)
     }
 
+    @Test func multicastTest() async throws {
+        let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
+
+        let firstUpdate = Task {
+            var updateCount = 0
+            for await _ in await tween.onUpdate {
+                updateCount += 1
+            }
+            return updateCount
+        }
+
+        let secondUpdate = Task {
+            var updateCount = 0
+            for await _ in await tween.onUpdate {
+                updateCount += 1
+            }
+            return updateCount
+        }
+
+        let tweenTask = Task {
+            for _ in 1...Self.updateLoops {
+                try await Task.sleep(nanoseconds: tweenTaskDelay)
+                await tween.update(additionalElapsedTime: Self.timeIncrement)
+            }
+        }
+
+        let (firstUpdateFinalValue, secondUpdateFinalValue, _) = try await (firstUpdate.value, secondUpdate.value, tweenTask.value)
+        #expect(firstUpdateFinalValue == Self.updateLoops)
+        #expect(secondUpdateFinalValue == Self.updateLoops)
+    }
+
     @Test func stopAndCompleteTest() async throws {
         let tween = await Float.tween(.fromTo(Self.from, Self.to), options: Self.defaultOptions)
 
         let completionTask = Task {
             var completionRegistered = false
-            for await _ in tween.onCompletion {
+            for await _ in await tween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -81,7 +112,7 @@ struct TweenTests {
 
         let completionTask = Task {
             var completionRegistered = false
-            for await _ in tween.onCompletion {
+            for await _ in await tween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -129,7 +160,7 @@ struct TweenTests {
 
         let completionTask = Task {
             var completionRegistered = false
-            for await _ in tween.onCompletion {
+            for await _ in await tween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -137,7 +168,7 @@ struct TweenTests {
 
         Task {
             var expectedNotifiedLoopNumber = 1
-            for await notifiedLoopNumber in tween.onLoopCompletion {
+            for await notifiedLoopNumber in await tween.onLoopCompletion {
                 #expect(notifiedLoopNumber == expectedNotifiedLoopNumber)
                 expectedNotifiedLoopNumber += 1
             }
@@ -166,7 +197,7 @@ struct TweenTests {
 
         let completionTask = Task {
             var completionRegistered = false
-            for await _ in tween.onCompletion {
+            for await _ in await tween.onCompletion {
                 completionRegistered = true
             }
             return completionRegistered
@@ -174,7 +205,7 @@ struct TweenTests {
 
         Task {
             var expectedNotifiedLoopNumber = 1
-            for await notifiedLoopNumber in tween.onLoopCompletion {
+            for await notifiedLoopNumber in await tween.onLoopCompletion {
                 #expect(notifiedLoopNumber == expectedNotifiedLoopNumber)
                 expectedNotifiedLoopNumber += 1
             }

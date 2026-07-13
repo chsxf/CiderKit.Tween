@@ -13,7 +13,7 @@ public extension SKLabelNode {
         let tween = await String.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedText in tween.onUpdate {
+                for await updatedText in await tween.onUpdate {
                     await MainActor.run { self.text = updatedText }
                 }
             }
@@ -32,7 +32,7 @@ public extension SKLabelNode {
         let tween = await CGFloat.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedPreferredMaxLayoutWidth in tween.onUpdate {
+                for await updatedPreferredMaxLayoutWidth in await tween.onUpdate {
                     await MainActor.run { self.preferredMaxLayoutWidth = updatedPreferredMaxLayoutWidth }
                 }
             }
@@ -51,7 +51,7 @@ public extension SKLabelNode {
         let tween = await Int.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedNumberOfLines in tween.onUpdate {
+                for await updatedNumberOfLines in await tween.onUpdate {
                     await MainActor.run { self.numberOfLines = updatedNumberOfLines }
                 }
             }

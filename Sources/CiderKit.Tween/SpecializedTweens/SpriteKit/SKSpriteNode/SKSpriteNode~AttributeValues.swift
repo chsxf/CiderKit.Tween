@@ -17,7 +17,7 @@ public extension SKSpriteNode {
         let tween = await Float.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAttributeValue in tween.onUpdate {
+                for await updatedAttributeValue in await tween.onUpdate {
                     await MainActor.run { self.setValue(SKAttributeValue(float: updatedAttributeValue), forAttribute: key) }
                 }
             }
@@ -40,7 +40,7 @@ public extension SKSpriteNode {
         let tween = await SIMD2<Float>.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAttributeValue in tween.onUpdate {
+                for await updatedAttributeValue in await tween.onUpdate {
                     await MainActor.run { self.setValue(SKAttributeValue(vectorFloat2: updatedAttributeValue), forAttribute: key) }
                 }
             }
@@ -63,7 +63,7 @@ public extension SKSpriteNode {
         let tween = await SIMD3<Float>.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAttributeValue in tween.onUpdate {
+                for await updatedAttributeValue in await tween.onUpdate {
                     await MainActor.run { self.setValue(SKAttributeValue(vectorFloat3: updatedAttributeValue), forAttribute: key) }
                 }
             }
@@ -86,7 +86,7 @@ public extension SKSpriteNode {
         let tween = await SIMD4<Float>.tween(detailedTravel, options: options)
         if setupUpdate {
             Task {
-                for await updatedAttributeValue in tween.onUpdate {
+                for await updatedAttributeValue in await tween.onUpdate {
                     await MainActor.run { self.setValue(SKAttributeValue(vectorFloat4: updatedAttributeValue), forAttribute: key) }
                 }
             }

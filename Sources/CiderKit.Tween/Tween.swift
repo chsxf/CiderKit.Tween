@@ -1,13 +1,13 @@
 import Foundation
 
 /// Represents a tween and is the main point of interaction with it
-///
-/// > Note: This type has dynamic member lookup for ```TweenData```
-@dynamicMemberLookup
 public struct Tween<T: Sendable>: Sendable {
 
     internal let instance: TweenInstanceActor<T>
     internal let data: TweenData<T>
+
+    /// Access to the tween options passed during initialization
+    public let options: TweenOptions
 
     /// Indicates if the tween is running or not. The ```isComplete``` is `true`, this is always `false`
     public var isRunning: Bool { get async { await instance.isRunning } }
@@ -16,6 +16,20 @@ public struct Tween<T: Sendable>: Sendable {
     /// Indicates how many times has elapsed during the tween. For looping tweens, this indicates the elapsed time inside a loop and not the overall elapsed time.
     public var elpasedTime: TimeInterval { get async { await instance.elapsedTime } }
 
+    /// Retrieves an `AsyncStream` that will produce one `Void` value when the tween starts
+    ///
+    /// > Warning: You have to await for this `AsyncStream` values before the tween has started to receive values
+    public var onStart: AsyncStream<Void> { get async { await instance.makeStartStream() } }
+
+    /// Retrieves an `AsyncStream` that will produce one value every time the tween progresses
+    public var onUpdate: AsyncStream<T> { get async { await instance.makeUpdateStream() } }
+
+    /// Retrieves an `AsyncStream` that will procude one value every time a loop completes. No value is produced if the tween doesn't loop.
+    public var onLoopCompletion: AsyncStream<UInt> { get async { await instance.makeLoopCompletionStream() } }
+
+    /// Retrieves an `AsyncStream` that will produce one `Void` value when the tween completes
+    public var onCompletion: AsyncStream<Void> { get async { await instance.makeCompletionStream() } }
+
     /// Initializer
     ///
     /// - Parameters:
@@ -23,12 +37,8 @@ public struct Tween<T: Sendable>: Sendable {
     ///     - options: Options for this tween
     public init(data: TweenData<T>, options: TweenOptions) async {
         self.data = data
+        self.options = options
         instance = await TweenInstanceActor(tweenData: data, options: options)
-    }
-
-    /// Dymamic accessor for members of ```TweenData```.
-    public subscript<Result>(dynamicMember member: KeyPath<TweenData<T>, Result>) -> Result {
-        data[keyPath: member]
     }
 
     /// Progress the tween by a certain amount of time in seconds
@@ -52,7 +62,7 @@ public struct Tween<T: Sendable>: Sendable {
     @discardableResult
     public func waitForCompletion() async -> Bool {
         var completed = false
-        for await _ in data.onCompletion {
+        for await _ in await onCompletion {
             completed = true
         }
         return completed
