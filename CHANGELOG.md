@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-07-13
+
+### Added
+
+- Added ability for multiple subscribers to listen to tween event streams
+
+## [0.6.0] - 2026-07-12
+
+### Changed
+
+- Moved to TweenOptions instead of individual parameters to reduce constructor signature length
+
 ## [0.5.0] - 2025-11-16
 
 ### Added
